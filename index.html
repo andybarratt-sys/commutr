@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#00189F" id="theme-color">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Slaithwaite Trains</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500&family=Onest:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { overflow-x: hidden; scrollbar-width: none; -ms-overflow-style: none; }
+  html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background: #00189F;
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  .board {
+    max-width: 393px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  /* App header — fixed, full bleed, coloured by status */
+  .app-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    padding: calc(env(safe-area-inset-top) + 24px) 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    background: #00189F;
+    transition: background 0.3s ease;
+  }
+  .app-header.warn { background: #FFCA00; }
+  .app-header.bad  { background: #D3131A; }
+
+  .station {
+    font-family: 'Onest', sans-serif;
+    font-size: 34px;
+    font-weight: 500;
+    color: #FFFFFF;
+    line-height: 1.275;
+  }
+  .app-header.warn .station { color: #000000; }
+
+  .headline {
+    font-family: 'Onest', sans-serif;
+    font-size: 22px;
+    font-weight: 400;
+    color: #FFFFFF;
+    line-height: 1.273;
+  }
+  .app-header.warn .headline { color: #000000; }
+
+  .updated {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 4px;
+  }
+  .app-header.warn .updated { color: rgba(0,0,0,0.5); }
+
+  /* Card */
+  #trains {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .train {
+    background: #FFFFFF;
+    border-radius: 16px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  /* Top row: time + status */
+  .train-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+  .train-time {
+    font-size: 16px;
+    font-weight: 500;
+    color: #000;
+    flex: 1;
+  }
+  .train-status {
+    font-size: 16px;
+    font-weight: 400;
+    color: #8E8E8E;
+    text-align: right;
+  }
+  .train-status.on-time   { color: #63975C; }
+  .train-status.delayed   { color: #C73232; }
+  .train-status.cancelled { color: #C73232; text-decoration: line-through; }
+
+  /* Body */
+  .train-body {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .train-route {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .train-route .loc { color: #2E2E2E; }
+  .train-route .sep { color: #8E8E8E; }
+  .train-route .train-plat {
+    margin-left: auto;
+    font-size: 14px;
+    font-weight: 400;
+    color: #8E8E8E;
+    text-align: right;
+  }
+
+  .train-detail {
+    font-size: 12px;
+    font-weight: 400;
+    color: #8E8E8E;
+    flex: 1;
+  }
+  .train-footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    min-height: 16px;
+  }
+
+  .message {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: #8E8E8E;
+    font-size: 14px;
+    background: #fff;
+    border-radius: 16px;
+  }
+
+  .cards-wrapper {
+    padding: 0 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-top: var(--header-height, 200px);
+  }
+
+  .refresh-btn {
+    width: 100%;
+    padding: 12px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    color: #8E8E8E;
+    background: #fff;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+  }
+  .refresh-btn:active { opacity: 0.7; }
+
+  /* Segmented progress bar */
+  .progress-bar {
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+    margin-top: 4px;
+  }
+  .progress-bar .seg {
+    flex: 1;
+    height: 3px;
+    border-radius: 99px;
+    background: #E8E8E8;
+  }
+  .progress-bar .seg.done { background: #63975C; }
+  .progress-bar .seg.done.late { background: #C73232; }
+
+  @media (prefers-color-scheme: dark) {
+    .progress-bar .seg { background: #3A3A3A; }
+  }
+
+  @media (prefers-color-scheme: dark) {
+    body { background: #1A1A1A; }
+    .train { background: #2A2A2A; }
+    .train-time { color: #fff; }
+    .train-route .loc { color: #E0E0E0; }
+    .refresh-btn { background: #2A2A2A; }
+    .message { background: #2A2A2A; }
+    .progress-bar .seg { background: #3A3A3A; }
+  }
+</style>
+</head>
+<body>
+<div class="board">
+  <div class="app-header" id="app-header">
+    <div class="station">Slaithwaite</div>
+    <div class="headline" id="headline"></div>
+    <div class="updated" id="updated">Loading...</div>
+  </div>
+  <div class="cards-wrapper">
+    <div id="trains"><div class="message">Fetching live trains…</div></div>
+    <button class="refresh-btn" onclick="load()">↻ Refresh</button>
+  </div>
+</div>
+
+<script>
+let allServices = [];
+
+function getTag(xml, tag) {
+  const m = xml.match(new RegExp(`<[^>]*:?${tag}[^>]*>([^<]*)<`));
+  return m ? m[1].trim() : '';
+}
+
+function parseServices(xml, type) {
+  const re = /<lt8:service>([\s\S]*?)<\/lt8:service>/g;
+  const services = [];
+  let m;
+  while ((m = re.exec(xml)) !== null) {
+    const s = m[1];
+    const destMatch = s.match(/<lt5:destination>[\s\S]*?<lt4:locationName>([^<]+)<\/lt4:locationName>/);
+    const origMatch = s.match(/<lt5:origin>[\s\S]*?<lt4:locationName>([^<]+)<\/lt4:locationName>/);
+    const time = getTag(s, 'sta') || getTag(s, 'std');
+
+    let lastSeen = null;
+    const prevBlock = s.match(/<lt8:previousCallingPoints>([\s\S]*?)<\/lt8:previousCallingPoints>/);
+    if (prevBlock) {
+      const cpRe = /<lt8:callingPoint>([\s\S]*?)<\/lt8:callingPoint>/g;
+      let cp;
+      while ((cp = cpRe.exec(prevBlock[1])) !== null) {
+        const atMatch = cp[1].match(/<lt8:at>([^<]+)<\/lt8:at>/);
+        const locMatch = cp[1].match(/<lt8:locationName>([^<]+)<\/lt8:locationName>/);
+        const at = atMatch ? atMatch[1].trim() : '';
+        const loc = locMatch ? locMatch[1].trim() : '';
+        if (at && at !== 'No report' && loc) lastSeen = { loc, at };
+      }
+      const allCps = [...prevBlock[1].matchAll(/<lt8:callingPoint>([\s\S]*?)<\/lt8:callingPoint>/g)];
+      const stopsAway = allCps.filter(cp => !/<lt8:at>/.test(cp[1])).length;
+      if (lastSeen) lastSeen.stopsAway = stopsAway;
+    }
+
+    // Count total and completed stops for progress bar
+    let completedStops = 0, totalStops = 0;
+    if (prevBlock) {
+      const allCps = [...prevBlock[1].matchAll(/<lt8:callingPoint>([\s\S]*?)<\/lt8:callingPoint>/g)];
+      totalStops = allCps.length;
+      completedStops = allCps.filter(cp => /<lt8:at>/.test(cp[1])).length;
+    }
+
+    services.push({
+      type,
+      time,
+      sortKey: time.replace(':', ''),
+      expected: getTag(s, 'eta') || getTag(s, 'etd'),
+      platform: getTag(s, 'platform'),
+      destination: destMatch ? destMatch[1] : '',
+      origin: origMatch ? origMatch[1] : '',
+      serviceID: getTag(s, 'serviceID'),
+      lastSeen,
+      completedStops,
+      totalStops
+    });
+  }
+  return services;
+}
+
+function lastSeenLabel(lastSeen, arrivalTime) {
+  const stops = lastSeen.stopsAway;
+  const isRealTime = /^\d{2}:\d{2}$/.test(lastSeen.at);
+
+  // If next stop, calculate arriving in X mins
+  if (stops === 0 && arrivalTime) {
+    const now = new Date();
+    const nowMins = now.getHours() * 60 + now.getMinutes();
+    const [ah, am] = arrivalTime.split(':').map(Number);
+    const minsAway = (ah * 60 + am) - nowMins;
+    if (minsAway <= 1) return `Arriving soon`;
+    if (minsAway < 60) return `Arriving in ${minsAway} mins`;
+  }
+
+  const stopStr = stops === 0 ? 'next stop' : stops === 1 ? '1 stop to go' : `${stops} stops to go`;
+  if (!isRealTime) return `Just departed ${lastSeen.loc}, ${stopStr}`;
+  const now = new Date();
+  const nowMins = now.getHours() * 60 + now.getMinutes();
+  const [h, mn] = lastSeen.at.split(':').map(Number);
+  const diff = nowMins - (h * 60 + mn);
+  const timeStr = diff <= 0 ? '' : diff === 1 ? ' 1 min ago' : diff < 60 ? ` ${diff} mins ago` : '';
+  return `Departed ${lastSeen.loc}${timeStr}, ${stopStr}`;
+}
+
+function statusText(expected) {
+  if (!expected) return { text: '', cls: '' };
+  const lo = expected.toLowerCase();
+  if (lo === 'on time') return { text: 'On time', cls: 'on-time' };
+  if (lo === 'cancelled') return { text: 'Cancelled', cls: 'cancelled' };
+  return { text: `Expected ${expected}`, cls: 'delayed' };
+}
+
+function generateHeadline(services) {
+  const el = document.getElementById('headline');
+  const header = document.getElementById('app-header');
+  const themeColor = document.getElementById('theme-color');
+  if (!services.length) { el.textContent = ''; header.className = 'app-header'; return; }
+
+  const now = new Date();
+  const nowMins = now.getHours() * 60 + now.getMinutes();
+  function toMins(t) { const [h, mn] = t.split(':').map(Number); return h * 60 + mn; }
+
+  const cancelled = services.filter(s => (s.expected || '').toLowerCase() === 'cancelled');
+  const delayed   = services.filter(s => /^\d{2}:\d{2}$/.test(s.expected || ''));
+  const upcoming  = services
+    .filter(s => (s.expected || '').toLowerCase() !== 'cancelled')
+    .sort((a, b) => toMins(a.time) - toMins(b.time));
+  const next = upcoming[0];
+
+  if (cancelled.length && delayed.length) {
+    const c = cancelled[0];
+    header.className = 'app-header bad';
+    themeColor.content = '#D3131A';
+    document.body.style.background = '#D3131A';
+    el.textContent = `The ${c.time} from ${c.origin} to ${c.destination} is cancelled, and ${delayed.length} train${delayed.length > 1 ? 's are' : ' is'} delayed.`;
+  } else if (cancelled.length) {
+    const c = cancelled[0];
+    const nLabel = next ? ` The ${next.time} from ${next.origin} to ${next.destination} is your best bet.` : '';
+    header.className = 'app-header bad';
+    themeColor.content = '#D3131A';
+    document.body.style.background = '#D3131A';
+    el.textContent = `The ${c.time} from ${c.origin} to ${c.destination} is cancelled.${nLabel}`;
+  } else if (delayed.length) {
+    const d = delayed[0];
+    header.className = 'app-header warn';
+    themeColor.content = '#FFCA00';
+    document.body.style.background = '#FFCA00';
+    el.textContent = `The ${d.time} from ${d.origin} to ${d.destination} is running late — now expected ${d.expected}.`;
+  } else if (next) {
+    const minsAway = toMins(next.time) - nowMins;
+    const when = minsAway <= 1 ? 'due now' : minsAway < 60 ? `in ${minsAway} mins` : `at ${next.time}`;
+    header.className = 'app-header ok';
+    themeColor.content = '#00189F';
+    document.body.style.background = '#00189F';
+    el.textContent = `The ${next.time} from ${next.origin} to ${next.destination} is on time, arriving at Platform ${next.platform || '?'} ${when}.`;
+  } else {
+    header.className = 'app-header ok';
+    themeColor.content = '#00189F';
+    document.body.style.background = '#00189F';
+    el.textContent = '';
+  }
+}
+
+function render() {
+  generateHeadline(allServices);
+  if (!allServices.length) {
+    document.getElementById('trains').innerHTML = '<div class="message">No trains found</div>';
+    return;
+  }
+  document.getElementById('trains').innerHTML = allServices.map(s => {
+    const st = statusText(s.expected);
+    const detail = s.lastSeen ? lastSeenLabel(s.lastSeen, s.time) : '';
+    return `
+    <div class="train">
+      <div class="train-header">
+        <span class="train-time">${s.time}</span>
+        <span class="train-status ${st.cls}">${st.text}</span>
+      </div>
+      <div class="train-body">
+        <div class="train-route">
+          <span class="loc">${s.origin}</span>
+          <span class="sep">to</span>
+          <span class="loc">${s.destination}</span>
+          ${s.platform ? `<span class="train-plat">Platform ${s.platform}</span>` : ''}
+        </div>
+        ${detail ? `<div class="train-footer"><span class="train-detail">${detail}</span></div>` : ''}
+      </div>
+      ${s.totalStops > 0 ? `<div class="progress-bar">${
+        Array.from({length: s.totalStops}, (_, i) =>
+          `<div class="seg${i < s.completedStops ? ` done${/^\d{2}:\d{2}$/.test(s.expected||'') ? ' late' : ''}` : ''}"></div>`
+        ).join('')
+      }</div>` : ''}
+    </div>`
+  }).join('');
+}
+
+async function load() {
+  document.getElementById('trains').innerHTML = '<div class="message">Fetching live trains…</div>';
+  document.getElementById('updated').textContent = 'Updating...';
+  try {
+    const [depRes, arrRes] = await Promise.all([
+      fetch('https://icy-art-aabb.andybarratt.workers.dev/?crs=SWT&type=dep'),
+      fetch('https://icy-art-aabb.andybarratt.workers.dev/?crs=SWT&type=arr')
+    ]);
+    const [depXml, arrXml] = await Promise.all([depRes.text(), arrRes.text()]);
+    const deps = parseServices(depXml, 'dep');
+    const arrs = parseServices(arrXml, 'arr');
+    const seen = new Set();
+    allServices = [...arrs, ...deps].filter(s => {
+      if (seen.has(s.serviceID)) return false;
+      seen.add(s.serviceID);
+      return true;
+    }).sort((a, b) => a.sortKey.localeCompare(b.sortKey));
+    const now = new Date();
+    document.getElementById('updated').textContent = `Updated ${now.getHours()}:${String(now.getMinutes()).padStart(2,'0')}`;
+    render();
+    const h = document.getElementById('app-header').offsetHeight;
+    document.querySelector('.cards-wrapper').style.marginTop = h + 'px';
+  } catch(e) {
+    document.getElementById('trains').innerHTML = '<div class="message">Could not load trains. Check your connection.</div>';
+    document.getElementById('updated').textContent = 'Failed';
+  }
+}
+
+load();
+setInterval(load, 60000);
+</script>
+</body>
+</html>
