@@ -269,13 +269,18 @@ let arrServices = [];
 let activeTab   = 0; // 0 = dep, 1 = arr
 
 /* ── Tab switching ── */
+let headerTransitionTimer = null;
+
 function switchTab(idx) {
   activeTab = idx;
   document.getElementById('tab-dep').classList.toggle('active', idx === 0);
   document.getElementById('tab-arr').classList.toggle('active', idx === 1);
   document.getElementById('swipe-track').style.transform =
     idx === 0 ? 'translateX(0)' : 'translateX(-50%)';
-  updateHeader();
+
+  // Delay header colour transition by 500ms
+  clearTimeout(headerTransitionTimer);
+  headerTransitionTimer = setTimeout(updateHeader, 500);
 }
 
 /* ── Touch / swipe ── */
