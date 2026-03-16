@@ -422,9 +422,11 @@ function headlineFor(services, tab) {
   }
   if (next) {
     const away = toMins(next.time) - nowMin;
-    const when = away <= 1 ? 'soon' : away < 60 ? `in ${away} mins` : `at ${next.time}`;
     const lbl  = isDep ? `to ${next.destination}` : `from ${next.origin}`;
-    return { cls: '', text: `The ${next.time} ${lbl} is on time. Arriving at Platform ${next.platform || '?'} ${when}.` };
+    const plat = next.platform || '?';
+    if (away <= 1) return { cls: '', text: `The ${next.time} ${lbl} is on time, arriving at Platform ${plat} soon.` };
+    const when = away < 60 ? `in ${away} mins` : `at ${next.time}`;
+    return { cls: '', text: `The ${next.time} ${lbl} is on time, arriving at Platform ${plat} ${when}.` };
   }
   return { cls: '', text: '' };
 }
