@@ -237,8 +237,8 @@ body {
     <div class="status" id="status"></div>
     <div class="updated" id="updated">Loading...</div>
     <div class="tab-bar">
-      <button class="tab-btn active" id="tab-dep" onclick="switchTab(0)">Departures</button>
-      <button class="tab-btn" id="tab-arr" onclick="switchTab(1)">Arrivals</button>
+      <button class="tab-btn active" id="tab-dep" onclick="switchTab(0)">Departing</button>
+      <button class="tab-btn" id="tab-arr" onclick="switchTab(1)">Arriving</button>
     </div>
   </div>
 
@@ -385,7 +385,7 @@ function statusInfo(expected) {
 }
 
 /* ── Headline for a set of services ── */
-function headlineFor(services) {
+function headlineFor(services, tab) {
   if (!services.length) return { cls: 'ok', colour: '#00189F', text: '' };
 
   const toMins  = t => { const [h, mn] = t.split(':').map(Number); return h * 60 + mn; };
@@ -398,27 +398,37 @@ function headlineFor(services) {
     .sort((a, b) => toMins(a.time) - toMins(b.time));
   const next = upcoming[0];
 
+  // Departing tab = focus on destination; Arriving tab = focus on origin
+  const isDep = tab === 0;
+
   if (cancelled.length && delayed.length) {
     const c = cancelled[0];
+    const label = isDep ? `to ${c.destination}` : `from ${c.origin}`;
     return { cls: 'bad', colour: '#D3131A',
-      text: `The ${c.time} from ${c.origin} to ${c.destination} is cancelled, and ${delayed.length} train${delayed.length > 1 ? 's are' : ' is'} delayed.` };
+      text: `The ${c.time} ${label} is cancelled, and ${delayed.length} train${delayed.length > 1 ? 's are' : ' is'} delayed.` };
   }
   if (cancelled.length) {
     const c = cancelled[0];
-    const nLabel = next ? ` The ${next.time} from ${next.origin} to ${next.destination} is your best bet.` : '';
+    const label  = isDep ? `to ${c.destination}` : `from ${c.origin}`;
+    const nLabel = next
+      ? ` The ${next.time} ${isDep ? 'to ' + next.destination : 'from ' + next.origin} is your best bet.`
+      : '';
     return { cls: 'bad', colour: '#D3131A',
-      text: `The ${c.time} from ${c.origin} to ${c.destination} is cancelled.${nLabel}` };
+      text: `The ${c.time} ${label} is cancelled.${nLabel}` };
   }
   if (delayed.length) {
     const d = delayed[0];
+    const label = isDep ? `to ${d.destination}` : `from ${d.origin}`;
     return { cls: 'warn', colour: '#FFCA00',
-      text: `The ${d.time} from ${d.origin} to ${d.destination} is running late — now expected ${d.expected}.` };
+      text: `The ${d.time} ${label} is running late — now expected ${d.expected}.` };
   }
   if (next) {
-    const away = toMins(next.time) - nowMin;
-    const when = away <= 1 ? 'due now' : away < 60 ? `in ${away} mins` : `at ${next.time}`;
+    const away  = toMins(next.time) - nowMin;
+    const when  = away <= 1 ? 'due now' : away < 60 ? `in ${away} mins` : `at ${next.time}`;
+    const label = isDep ? `to ${next.destination}` : `from ${next.origin}`;
+    const verb  = isDep ? 'departing' : 'arriving at';
     return { cls: 'ok', colour: '#00189F',
-      text: `The ${next.time} from ${next.origin} to ${next.destination} is on time, arriving at Platform ${next.platform || '?'} ${when}.` };
+      text: `The ${next.time} ${label} is on time, ${verb} Platform ${next.platform || '?'} ${when}.` };
   }
   return { cls: 'ok', colour: '#00189F', text: '' };
 }
@@ -426,7 +436,7 @@ function headlineFor(services) {
 /* ── Update header based on active tab ── */
 function updateHeader() {
   const services = activeTab === 0 ? depServices : arrServices;
-  const { cls, colour, text } = headlineFor(services);
+  const { cls, colour, text } = headlineFor(services, activeTab);
   document.getElementById('header').className    = `header ${cls}`;
   document.getElementById('theme-color').content = colour;
   document.body.style.background                 = colour;
