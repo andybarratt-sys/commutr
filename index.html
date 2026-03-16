@@ -2,9 +2,6 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#FFFFFF" id="theme-color">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Slaithwaite</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -17,7 +14,7 @@ html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
 
 body {
   font-family: 'Onest', sans-serif;
-  background: #00189F;
+  background: #fff;
   min-height: 100vh;
 }
 
@@ -162,6 +159,15 @@ body {
   font-weight: 600;
   line-height: 1.273;
   color: #1A1A1A;
+}
+
+/* Expected time — Title 2, next to scheduled time */
+.card-expected {
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.273;
+  color: #1A1A1A;
+  flex-shrink: 0;
 }
 
 /* Chip — right aligned */
@@ -444,8 +450,8 @@ function renderList(services, elId, tab) {
     const expectedTime = /^\d{2}:\d{2}$/.test(s.expected || '') ? s.expected : '';
     return `<div class="card">
   <div class="card-row-top">
-    <span class="card-time">${s.time}</span>
-    <div class="card-chip-wrap">${chip ? `<span class="chip ${chip.cls}">${chip.text}${expectedTime ? ' ' + expectedTime : ''}</span>` : ''}</div>
+    <span class="card-time">${s.time}</span>${expectedTime ? `<span class="card-expected">Exp ${expectedTime}</span>` : ''}
+    <div class="card-chip-wrap">${chip ? `<span class="chip ${chip.cls}">${chip.text}</span>` : ''}</div>
   </div>
   <div class="card-row-route">
     <span class="card-preposition">${prep}</span>
