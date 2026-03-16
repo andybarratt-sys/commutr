@@ -183,6 +183,7 @@ body {
   color: #1A1A1A;
   white-space: nowrap;
 }
+.chip.info { background: transparent; border: 1px solid #D8DCF0; }
 .chip.warn { background: #FFF5CC; }
 .chip.bad  { background: #F5BFBF; }
 
@@ -205,16 +206,7 @@ body {
   font-size: 16px;
   font-weight: 600;
   line-height: 1.3125;
-  color: #1A1A1A;
-  flex: 1;
-}
-.card-platform {
-  font-size: 16px;
-  font-weight: 400;
-  line-height: 1.3125;
   color: #767676;
-  margin-left: auto;
-  flex-shrink: 0;
 }
 
 /* Row 3: Footnote detail */
@@ -366,10 +358,10 @@ function parseServices(xml, type) {
 function chipFor(expected) {
   if (!expected) return null;
   const lo = expected.toLowerCase();
-  if (lo === 'cancelled') return { cls: 'bad', text: 'Cancelled' };
+  if (lo === 'on time')   return { cls: 'info', text: 'On time' };
+  if (lo === 'cancelled') return { cls: 'bad',  text: 'Cancelled' };
   if (/^\d{2}:\d{2}$/.test(expected)) return { cls: 'warn', text: 'Running late' };
   return null;
-  // 'on time' deliberately returns null — no chip, no text in cards
 }
 
 function detailLabel(ls, arrTime) {
@@ -458,7 +450,6 @@ function renderList(services, elId, tab) {
   <div class="card-row-route">
     <span class="card-preposition">${prep}</span>
     <span class="card-destination">${dest}</span>
-    ${s.platform ? `<span class="card-platform">Platform ${s.platform}</span>` : ''}
   </div>${detail ? `
   <div class="card-detail">${detail}</div>` : ''}
 </div>`;
