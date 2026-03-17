@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>Departr</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -108,15 +111,18 @@ function parseServices(xml,type){
     const orig=s.match(/<lt5:origin>[\s\S]*?<lt4:locationName>([^<]+)<\/lt4:locationName>/);
     const time=getTag(s,'sta')||getTag(s,'std');
     const prevBlock=s.match(/<lt8:previousCallingPoints>([\s\S]*?)<\/lt8:previousCallingPoints>/)?.[1]||'';
-    const pts=[...prevBlock.matchAll(/<lt8:callingPoint>([\s\S]*?)<\/lt8:callingPoint>/g)].map(m=>{
+    const prevPoints=[...prevBlock.matchAll(/<lt8:callingPoint>([\s\S]*?)<\/lt8:callingPoint>/g)].map(m=>{
       const get=tag=>{const r=m[1].match(new RegExp('<lt8:'+tag+'>([^<]*)<'));return r?r[1].trim():'';};
       return{name:get('locationName'),at:get('at')};
     });
     let lastSeen=null;
-    for(const p of pts)if(p.at&&p.at!=='No report'&&p.name)lastSeen={loc:p.name,stopsAway:pts.filter(q=>!q.at).length};
+    for(const p of prevPoints)if(p.at&&p.at!=='No report'&&p.name)lastSeen={loc:p.name,stopsAway:prevPoints.filter(q=>!q.at).length};
     const nextBlock=s.match(/<lt8:subsequentCallingPoints>([\s\S]*?)<\/lt8:subsequentCallingPoints>/)?.[1]||'';
-    const nextPts=[...nextBlock.matchAll(/<lt8:callingPoint>/g)];
-    out.push({type,time,sortKey:time.replace(':',''),expected:getTag(s,'eta')||getTag(s,'etd'),platform:getTag(s,'platform'),origin:orig?orig[1]:'',destination:dest?dest[1]:'',serviceID:getTag(s,'serviceID'),lastSeen});
+    const nextPoints=[...nextBlock.matchAll(/<lt8:callingPoint>([\s\S]*?)<\/lt8:callingPoint>/g)].map(m=>{
+      const get=tag=>{const r=m[1].match(new RegExp('<lt8:'+tag+'>([^<]*)<'));return r?r[1].trim():'';};
+      return{name:get('locationName')};
+    });
+    out.push({type,time,sortKey:time.replace(':',''),expected:getTag(s,'eta')||getTag(s,'etd'),platform:getTag(s,'platform'),origin:orig?orig[1]:'',destination:dest?dest[1]:'',serviceID:getTag(s,'serviceID'),lastSeen,prevPoints,nextPoints});
   }
   return out;
 }
