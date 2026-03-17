@@ -99,8 +99,8 @@ body { font-family: 'Onest', sans-serif; background: #fff; min-height: 100vh; -w
       </div>
     </div>
     <div class="status-band" id="status-band">
-      <div class="status-updated" id="status-updated">Loading...</div>
       <div class="status-text"    id="status-text"></div>
+      <div class="status-updated" id="status-updated">Loading...</div>
     </div>
   </div>
 
@@ -287,8 +287,9 @@ function headlineFor(services, tab) {
     const away = toMins(effectiveTime) - nowMin;
     const lbl  = isDep ? 'to ' + next.destination : 'from ' + next.origin;
     const plat = next.platform || '?';
-    const when = away <= 1 ? 'soon' : away < 60 ? 'in ' + away + ' mins' : 'at ' + next.time;
-    return { cls: '', text: 'The ' + next.time + ' ' + lbl + ' is on time, arriving at Platform ' + plat + ' ' + when + '.' };
+    const when = away <= 1 ? 'now' : away < 60 ? 'in ' + away + ' mins' : 'at ' + next.time;
+    if (isDep) return { cls: '', text: 'The ' + next.time + ' to ' + next.destination + ' is on time, departing from Platform ' + plat + ' ' + when + '.' };
+    return { cls: '', text: 'The ' + next.time + ' from ' + next.origin + ' is on time, arriving at Platform ' + plat + ' ' + when + '.' };
   }
   return { cls: '', text: '' };
 }
