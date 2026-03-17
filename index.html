@@ -19,21 +19,14 @@ body { font-family: 'Onest', sans-serif; background: #fff; min-height: 100vh; -w
 /* ── Fixed top ── */
 .top { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 393px; z-index: 100; background: #fff; }
 
-/* ── Nav — padding: 24px 24px 0, gap: 12px ── */
-.nav { padding: calc(env(safe-area-inset-top) + 24px) 24px 0; display: flex; flex-direction: row; align-items: center; gap: 12px; }
-.nav-spacer { flex: 1; }
-.icon-btn { width: 40px; height: 40px; border-radius: 100px; background: rgba(26,26,26,0.1); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; -webkit-tap-highlight-color: transparent; }
-.icon-btn:active { opacity: 0.7; }
-.icon-btn svg { width: 24px; height: 24px; display: block; }
-
-/* ── Header — padding: 24px 24px 32px, gap: 12px ── */
-.header { padding: 24px 24px 32px; display: flex; flex-direction: column; gap: 12px; }
-.station { font-size: 34px; font-weight: 600; line-height: 1.206; color: #1A1A1A; }
+/* ── Header ── */
+.header { padding: calc(env(safe-area-inset-top) + 24px) 24px 32px; display: flex; flex-direction: column; gap: 16px; }
+.station { font-size: 28px; font-weight: 600; line-height: 1.214; color: #1A1A1A; }
 .tab-bar { display: flex; align-items: center; gap: 16px; }
 .tab-btn { font-family: 'Onest', sans-serif; font-size: 22px; font-weight: 400; line-height: 1.273; color: #767676; background: none; border: none; border-bottom: 2px solid transparent; padding: 0 0 2px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .tab-btn.active { font-weight: 600; color: #1A1A1A; border-bottom-color: #1A1A1A; }
 
-/* ── Status band — padding: 24px, gap: 4px ── */
+/* ── Status band ── */
 .status-band { padding: 24px; display: flex; flex-direction: column; gap: 4px; background: #00189F; transition: background 0.4s ease; }
 .status-band.warn { background: #FFCA00; }
 .status-band.bad  { background: #D3131A; }
@@ -45,447 +38,65 @@ body { font-family: 'Onest', sans-serif; background: #fff; min-height: 100vh; -w
 /* ── Swipe ── */
 .swipe-container { flex: 1; overflow: hidden; }
 .swipe-track { display: flex; width: 200%; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); will-change: transform; }
-.tab-panel { width: 50%; min-width: 0; }
+.tab-panel { width: 50%; min-width: 0; padding-top: 24px; }
 
-/* ── Cards container — gap: 1px, bg: #F3F3F3 ── */
+/* ── Cards ── */
 .cards { display: flex; flex-direction: column; gap: 1px; background: #F3F3F3; }
+.card { background: #fff; padding: 16px 24px; display: flex; flex-direction: column; gap: 8px; }
+.card.late { gap: 16px; }
 
-/* Card — padding: 16px 24px, gap: 8px */
-.card { background: #fff; padding: 16px 24px; display: flex; flex-direction: column; gap: 8px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.card:active { background: #FAFAFA; }
-
-/* Rows — gap: 4px */
-.card-rows { display: flex; flex-direction: column; gap: 8px; }
-
-/* Row 1: Left (time + chip, hug) · Right (platform, flex-end) */
-.card-row-top { display: flex; flex-direction: row; align-items: center; gap: 8px; }
-.card-row-top-left { display: flex; flex-direction: row; align-items: center; gap: 8px; }
-.card-row-top-right { display: flex; flex-direction: row; justify-content: flex-end; align-items: center; gap: 6px; flex: 1; }
-
-/* Title 2 Emphasis — Onest 600 22px #1A1A1A */
-.card-time { font-size: 22px; font-weight: 600; line-height: 1.273; color: #1A1A1A; flex-shrink: 0; }
-
-/* Footnote — Onest 400 13px #767676 */
+/* Row 1 */
+.card-row-1       { display: flex; align-items: center; gap: 8px; }
+.card-row-1-left  { display: flex; align-items: center; gap: 8px; }
+.card-row-1-right { flex: 1; display: flex; justify-content: flex-end; align-items: center; }
+.card-time     { font-size: 22px; font-weight: 600; line-height: 1.273; color: #1A1A1A; flex-shrink: 0; }
 .card-platform { font-size: 13px; font-weight: 400; line-height: 1.385; color: #767676; }
 
 /* Chips */
-.chip { display: inline-flex; align-items: center; justify-content: center; padding: 4px 8px 3px; height: 24px; border-radius: 6px; font-family: 'Onest', sans-serif; font-size: 13px; font-weight: 600; line-height: 1.385; color: #1A1A1A; white-space: nowrap; border: 1px solid transparent; }
+.chip { display: inline-flex; align-items: center; justify-content: center; padding: 4px 8px 3px; height: 24px; border-radius: 6px; font-family: 'Onest', sans-serif; font-size: 13px; font-weight: 600; color: #1A1A1A; white-space: nowrap; border: 1px solid transparent; }
 .chip.info { background: transparent; border-color: #D8DCF0; }
 .chip.warn { background: #FFF5CC; }
 .chip.bad  { background: #F5BFBF; }
 
-/* Row 2: "to/from" (Callout 400 16px grey) + destination (Callout 400 16px dark) */
-.card-row-route { display: flex; flex-direction: row; align-items: center; gap: 6px; }
-.card-prep { font-size: 16px; font-weight: 400; line-height: 1.3125; color: #767676; flex-shrink: 0; }
-.card-dest { font-size: 16px; font-weight: 400; line-height: 1.3125; color: #1A1A1A; }
+/* Row 2 */
+.card-row-2 { display: flex; align-items: center; gap: 6px; }
+.card-prep  { font-size: 16px; font-weight: 400; line-height: 1.3125; color: #767676; flex-shrink: 0; }
+.card-dest  { font-size: 16px; font-weight: 400; line-height: 1.3125; color: #1A1A1A; }
 
+/* Row 3 */
+.card-row-3 { font-size: 16px; font-weight: 400; line-height: 1.3125; color: #767676; }
 
-/* ── Station node list ── */
-.node-list { display: flex; flex-direction: column; }
-
-.node-item {
-  display: flex; flex-direction: row; align-items: center;
-  gap: 16px; padding-bottom: 24px; position: relative;
-}
-.node-item:last-child { padding-bottom: 0; }
-
-/* Continuous vertical line via ::after — runs from dot centre to bottom of item */
-.node-item:not(:last-child)::after {
-  content: ''; position: absolute;
-  left: 5px; top: 18px; bottom: 0; width: 2px;
-  background: var(--lc, #00189F);
-}
-
-.node-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; position: relative; z-index: 1; }
-.node-dot.blue { background: #00189F; }
-.node-dot.grey { background: #D0D0D0; }
-
-.node-label { font-size: 22px; font-weight: 600; line-height: 1.273; color: #1A1A1A; }
-
-
-/* ── Empty ── */
+/* ── Empty state ── */
 .message { padding: 24px; font-size: 16px; color: #767676; text-align: center; }
 
-/* ═══════════════════════════════════════
-   BOTTOM SHEET
-═══════════════════════════════════════ */
-.sheet-overlay {
-  position: fixed; inset: 0; z-index: 200;
-  background: rgba(0,0,0,0);
-  transition: background 0.35s ease;
-  pointer-events: none;
+/* ── Refresh button ── */
+.refresh-btn {
+  position: fixed;
+  bottom: calc(env(safe-area-inset-bottom) + 24px);
+  right: 24px;
+  width: 72px; height: 72px;
+  border-radius: 100px;
+  background: #7799FF;
+  border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  -webkit-tap-highlight-color: transparent;
+  z-index: 50;
+  /* Keep within the 393px board */
+  max-right: calc(50% - 196.5px + 24px);
 }
-.sheet-overlay.open {
-  background: rgba(0,0,0,0.4);
-  pointer-events: all;
-}
-
-.sheet {
-  position: fixed; bottom: 0; left: 50%; z-index: 201;
-  transform: translateX(-50%) translateY(100%);
-  width: 100%; max-width: 393px;
-  height: 80vh;
-  background: #fff;
-  border-radius: 32px 32px 0 0;
-  display: flex; flex-direction: column;
-  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
-  overflow: hidden;
-}
-.sheet.open { transform: translateX(-50%) translateY(0); }
-
-/* Sheet drag handle */
-.sheet-handle {
-  width: 36px; height: 4px; border-radius: 2px;
-  background: #E0E0E0; margin: 12px auto 0;
-  flex-shrink: 0;
-}
-
-/* Sheet nav — padding: 24px 24px 0 */
-.sheet-nav {
-  padding: 12px 24px 0;
-  display: flex; flex-direction: row; align-items: center; gap: 12px;
-  flex-shrink: 0;
-}
-.sheet-nav-spacer { flex: 1; }
-
-/* Sheet header — padding: 24px 24px 32px, gap: 16px */
-.sheet-header {
-  padding: 24px 24px 32px;
-  display: flex; flex-direction: column; gap: 16px;
-  flex-shrink: 0;
-}
-.sheet-header-top {
-  display: flex; flex-direction: column; gap: 8px;
-}
-.sheet-time-row {
-  display: flex; flex-direction: row; align-items: baseline; gap: 8px;
-}
-.sheet-time-left {
-  display: flex; flex-direction: row; align-items: center; gap: 8px;
-}
-/* Title 2 Emphasis */
-.sheet-time { font-size: 22px; font-weight: 600; line-height: 1.273; color: #1A1A1A; }
-/* Title 2 */
-.sheet-exp  { font-size: 22px; font-weight: 400; line-height: 1.273; color: #1A1A1A; }
-.sheet-direction { font-size: 22px; font-weight: 400; line-height: 1.273; color: #767676; flex: 1; }
-/* Title 1 — Onest 600 28px */
-.sheet-dest { font-size: 28px; font-weight: 600; line-height: 1.214; color: #1A1A1A; }
-
-/* Sheet content — scrollable, padding: 0 24px 24px */
-.sheet-content {
-  padding: 0 24px calc(env(safe-area-inset-bottom) + 24px);
-  overflow-y: auto; flex: 1;
-  scrollbar-width: none;
-}
-.sheet-content::-webkit-scrollbar { display: none; }
-
-/* ── Empty ── */
-.message { padding: 24px; font-size: 16px; color: #767676; text-align: center; }
-
-/* ═══════════════════════════════════════
-   BOTTOM SHEET
-═══════════════════════════════════════ */
-.sheet-overlay {
-  position: fixed; inset: 0; z-index: 200;
-  background: rgba(0,0,0,0);
-  transition: background 0.35s ease;
-  pointer-events: none;
-}
-.sheet-overlay.open {
-  background: rgba(0,0,0,0.4);
-  pointer-events: all;
-}
-
-.sheet {
-  position: fixed; bottom: 0; left: 50%; z-index: 201;
-  transform: translateX(-50%) translateY(100%);
-  width: 100%; max-width: 393px;
-  height: 80vh;
-  background: #fff;
-  border-radius: 32px 32px 0 0;
-  display: flex; flex-direction: column;
-  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
-  overflow: hidden;
-}
-.sheet.open { transform: translateX(-50%) translateY(0); }
-
-/* Sheet drag handle */
-.sheet-handle {
-  width: 36px; height: 4px; border-radius: 2px;
-  background: #E0E0E0; margin: 12px auto 0;
-  flex-shrink: 0;
-}
-
-/* Sheet nav — padding: 24px 24px 0 */
-.sheet-nav {
-  padding: 12px 24px 0;
-  display: flex; flex-direction: row; align-items: center; gap: 12px;
-  flex-shrink: 0;
-}
-.sheet-nav-spacer { flex: 1; }
-
-/* Sheet header — padding: 24px 24px 32px, gap: 16px */
-.sheet-header {
-  padding: 24px 24px 32px;
-  display: flex; flex-direction: column; gap: 16px;
-  flex-shrink: 0;
-}
-.sheet-header-top {
-  display: flex; flex-direction: column; gap: 8px;
-}
-.sheet-time-row {
-  display: flex; flex-direction: row; align-items: baseline; gap: 8px;
-}
-.sheet-time-left {
-  display: flex; flex-direction: row; align-items: center; gap: 8px;
-}
-/* Title 2 Emphasis */
-.sheet-time { font-size: 22px; font-weight: 600; line-height: 1.273; color: #1A1A1A; }
-/* Title 2 */
-.sheet-exp  { font-size: 22px; font-weight: 400; line-height: 1.273; color: #1A1A1A; }
-.sheet-direction { font-size: 22px; font-weight: 400; line-height: 1.273; color: #767676; flex: 1; }
-/* Title 1 — Onest 600 28px */
-.sheet-dest { font-size: 28px; font-weight: 600; line-height: 1.214; color: #1A1A1A; }
-
-/* Sheet content — scrollable, padding: 0 24px 24px */
-.sheet-content {
-  padding: 0 24px calc(env(safe-area-inset-bottom) + 24px);
-  overflow-y: auto; flex: 1;
-  scrollbar-width: none;
-}
-.sheet-content::-webkit-scrollbar { display: none; }
-
-
-/* ── Empty ── */
-.message { padding: 24px; font-size: 16px; color: #767676; text-align: center; }
-
-/* ═══════════════════════════════════════
-   BOTTOM SHEET
-═══════════════════════════════════════ */
-.sheet-overlay {
-  position: fixed; inset: 0; z-index: 200;
-  background: rgba(0,0,0,0);
-  transition: background 0.35s ease;
-  pointer-events: none;
-}
-.sheet-overlay.open {
-  background: rgba(0,0,0,0.4);
-  pointer-events: all;
-}
-
-.sheet {
-  position: fixed; bottom: 0; left: 50%; z-index: 201;
-  transform: translateX(-50%) translateY(100%);
-  width: 100%; max-width: 393px;
-  height: 80vh;
-  background: #fff;
-  border-radius: 32px 32px 0 0;
-  display: flex; flex-direction: column;
-  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
-  overflow: hidden;
-}
-.sheet.open { transform: translateX(-50%) translateY(0); }
-
-/* Sheet drag handle */
-.sheet-handle {
-  width: 36px; height: 4px; border-radius: 2px;
-  background: #E0E0E0; margin: 12px auto 0;
-  flex-shrink: 0;
-}
-
-/* Sheet nav — padding: 24px 24px 0 */
-.sheet-nav {
-  padding: 12px 24px 0;
-  display: flex; flex-direction: row; align-items: center; gap: 12px;
-  flex-shrink: 0;
-}
-.sheet-nav-spacer { flex: 1; }
-
-/* Sheet header — padding: 24px 24px 32px, gap: 16px */
-.sheet-header {
-  padding: 24px 24px 32px;
-  display: flex; flex-direction: column; gap: 16px;
-  flex-shrink: 0;
-}
-.sheet-header-top {
-  display: flex; flex-direction: column; gap: 8px;
-}
-.sheet-time-row {
-  display: flex; flex-direction: row; align-items: baseline; gap: 8px;
-}
-.sheet-time-left {
-  display: flex; flex-direction: row; align-items: center; gap: 8px;
-}
-/* Title 2 Emphasis */
-.sheet-time { font-size: 22px; font-weight: 600; line-height: 1.273; color: #1A1A1A; }
-/* Title 2 */
-.sheet-exp  { font-size: 22px; font-weight: 400; line-height: 1.273; color: #1A1A1A; }
-.sheet-direction { font-size: 22px; font-weight: 400; line-height: 1.273; color: #767676; flex: 1; }
-/* Title 1 — Onest 600 28px */
-.sheet-dest { font-size: 28px; font-weight: 600; line-height: 1.214; color: #1A1A1A; }
-
-/* Sheet content — scrollable, padding: 0 24px 24px */
-.sheet-content {
-  padding: 0 24px calc(env(safe-area-inset-bottom) + 24px);
-  overflow-y: auto; flex: 1;
-  scrollbar-width: none;
-}
-.sheet-content::-webkit-scrollbar { display: none; }
-
-/* Each stop: dot-track left, label right, stretching full height */
-
-
-/* Left column: dot at top, line filling remaining height */
-
-
-
-
-
-
-
-
-
-
-
-
-/* Title 2 Emphasis — Onest 600 22px */
-
-
-
-
-
-/* ── Empty ── */
-.message { padding: 24px; font-size: 16px; color: #767676; text-align: center; }
-
-/* ═══════════════════════════════════════
-   BOTTOM SHEET
-═══════════════════════════════════════ */
-.sheet-overlay {
-  position: fixed; inset: 0; z-index: 200;
-  background: rgba(0,0,0,0);
-  transition: background 0.35s ease;
-  pointer-events: none;
-}
-.sheet-overlay.open {
-  background: rgba(0,0,0,0.4);
-  pointer-events: all;
-}
-
-.sheet {
-  position: fixed; bottom: 0; left: 50%; z-index: 201;
-  transform: translateX(-50%) translateY(100%);
-  width: 100%; max-width: 393px;
-  height: 80vh;
-  background: #fff;
-  border-radius: 32px 32px 0 0;
-  display: flex; flex-direction: column;
-  transition: transform 0.4s cubic-bezier(0.32, 0.72, 0, 1);
-  overflow: hidden;
-}
-.sheet.open { transform: translateX(-50%) translateY(0); }
-
-/* Sheet drag handle */
-.sheet-handle {
-  width: 36px; height: 4px; border-radius: 2px;
-  background: #E0E0E0; margin: 12px auto 0;
-  flex-shrink: 0;
-}
-
-/* Sheet nav — padding: 24px 24px 0 */
-.sheet-nav {
-  padding: 12px 24px 0;
-  display: flex; flex-direction: row; align-items: center; gap: 12px;
-  flex-shrink: 0;
-}
-.sheet-nav-spacer { flex: 1; }
-
-/* Sheet header — padding: 24px 24px 32px, gap: 16px */
-.sheet-header {
-  padding: 24px 24px 32px;
-  display: flex; flex-direction: column; gap: 16px;
-  flex-shrink: 0;
-}
-.sheet-header-top {
-  display: flex; flex-direction: column; gap: 8px;
-}
-.sheet-time-row {
-  display: flex; flex-direction: row; align-items: baseline; gap: 8px;
-}
-.sheet-time-left {
-  display: flex; flex-direction: row; align-items: center; gap: 8px;
-}
-/* Title 2 Emphasis */
-.sheet-time { font-size: 22px; font-weight: 600; line-height: 1.273; color: #1A1A1A; }
-/* Title 2 */
-.sheet-exp  { font-size: 22px; font-weight: 400; line-height: 1.273; color: #1A1A1A; }
-.sheet-direction { font-size: 22px; font-weight: 400; line-height: 1.273; color: #767676; flex: 1; }
-/* Title 1 — Onest 600 28px */
-.sheet-dest { font-size: 28px; font-weight: 600; line-height: 1.214; color: #1A1A1A; }
-
-/* Sheet content — scrollable, padding: 0 24px 24px */
-.sheet-content {
-  padding: 0 24px calc(env(safe-area-inset-bottom) + 24px);
-  overflow-y: auto; flex: 1;
-  scrollbar-width: none;
-}
-.sheet-content::-webkit-scrollbar { display: none; }
-
-/* Column of alternating node-rows and connector-rows, matching Figma exactly */
-
-
-/* Node row — dot left, label right, gap 16px (matches layout_L32KKV) */
-
-
-/* Dot — 12×12 circle */
-
-
-/* Title 2 Emphasis — Onest 600 22px #1A1A1A */
-
-
-
-/* Connector — 12px wide, 24px tall (matches layout_C7460K / layout_MFQONK) */
-
-/* The 2px line inside the 12px container */
-
-
-
-
-
-/* ── Station node list ── */
-.node-list  { display: flex; flex-direction: column; }
-.node-item  { display: flex; flex-direction: row; align-items: stretch; }
-.node-track { display: flex; flex-direction: column; align-items: center; width: 28px; flex-shrink: 0; }
-.node-dot   { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
-.node-dot.blue { background: #00189F; }
-.node-dot.grey { background: #D0D0D0; }
-.node-line  { width: 2px; flex: 1; }
-.node-line.blue     { background: #00189F; }
-.node-line.grey     { background: #D0D0D0; }
-.node-line.progress { background: linear-gradient(to bottom, #00189F 50%, #D0D0D0 50%); }
-.node-line.none     { background: transparent; }
-.node-label { font-size: 22px; font-weight: 600; line-height: 1.273; color: #1A1A1A; padding: 0 0 16px 12px; }
-.node-label.last { padding-bottom: 0; }
+.refresh-btn:active { opacity: 0.85; transform: scale(0.95); }
+.refresh-btn svg { width: 32px; height: 32px; }
 </style>
 </head>
 <body>
 <div class="board">
-
-  <!-- Fixed top -->
   <div class="top" id="top">
-    <div class="nav">
-      <button class="icon-btn" onclick="history.back()">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-      <div class="nav-spacer"></div>
-      <button class="icon-btn">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M4 6H20M7 12H17M10 18H14" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </button>
-    </div>
     <div class="header">
       <div class="station">Slaithwaite</div>
       <div class="tab-bar">
-        <button class="tab-btn active" id="tab-dep" onclick="switchTab(0)">Departing</button>
-        <button class="tab-btn"        id="tab-arr" onclick="switchTab(1)">Arriving</button>
+        <button class="tab-btn active" id="tab-dep" onclick="switchTab(0)">Departures</button>
+        <button class="tab-btn"        id="tab-arr" onclick="switchTab(1)">Arrivals</button>
       </div>
     </div>
     <div class="status-band" id="status-band">
@@ -494,7 +105,6 @@ body { font-family: 'Onest', sans-serif; background: #fff; min-height: 100vh; -w
     </div>
   </div>
 
-  <!-- Content -->
   <div class="swipe-container" id="swipe-container">
     <div class="swipe-track" id="swipe-track">
       <div class="tab-panel">
@@ -507,52 +117,25 @@ body { font-family: 'Onest', sans-serif; background: #fff; min-height: 100vh; -w
   </div>
 </div>
 
-<!-- Bottom sheet overlay -->
-<div class="sheet-overlay" id="sheet-overlay" onclick="closeSheet()"></div>
-
-<!-- Bottom sheet -->
-<div class="sheet" id="sheet">
-  <div class="sheet-handle"></div>
-  <div class="sheet-nav">
-    <div class="sheet-nav-spacer"></div>
-    <button class="icon-btn" onclick="closeSheet()">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M18 6L6 18M6 6L18 18" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-  </div>
-  <div class="sheet-header">
-    <div class="sheet-header-top">
-      <div class="sheet-time-row">
-        <div class="sheet-time-left">
-          <span class="sheet-time" id="sheet-time"></span>
-          <span class="sheet-exp"  id="sheet-exp"></span>
-        </div>
-        <span class="sheet-direction" id="sheet-direction"></span>
-      </div>
-      <div class="sheet-dest" id="sheet-dest"></div>
-    </div>
-    <div id="sheet-chip-wrap"></div>
-  </div>
-  <div class="sheet-content">
-    <div class="node-list" id="node-list"></div>
-  </div>
-</div>
+<!-- Refresh button -->
+<button class="refresh-btn" id="refresh-btn" onclick="load()" aria-label="Refresh">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C14.8273 3 17.35 4.30367 19 6.34267" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M19 3V7H15" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
 
 <script>
 'use strict';
 
 const WORKER = 'https://icy-art-aabb.andybarratt.workers.dev';
-let depServices = [];
-let arrServices = [];
-let activeTab   = 0;
-let headerTimer = null;
+let depServices = [], arrServices = [], activeTab = 0, headerTimer = null;
 
-/* ── Layout ── */
 function adjustTop() {
   document.getElementById('swipe-container').style.marginTop =
     document.getElementById('top').offsetHeight + 'px';
 }
 
-/* ── Tabs ── */
 function switchTab(idx) {
   activeTab = idx;
   document.getElementById('tab-dep').classList.toggle('active', idx === 0);
@@ -563,7 +146,6 @@ function switchTab(idx) {
   headerTimer = setTimeout(() => { updateBand(); adjustTop(); }, 500);
 }
 
-/* ── Swipe ── */
 let tx = 0, ty = 0;
 document.getElementById('swipe-container').addEventListener('touchstart', e => {
   tx = e.touches[0].clientX; ty = e.touches[0].clientY;
@@ -577,18 +159,16 @@ document.getElementById('swipe-container').addEventListener('touchend', e => {
   }
 }, { passive: true });
 
-/* ── XML helpers ── */
 function getTag(xml, tag) {
-  const m = xml.match(new RegExp(`<[^>]*:?${tag}[^>]*>([^<]*)<`));
+  const m = xml.match(new RegExp('<[^>]*:?' + tag + '[^>]*>([^<]*)<'));
   return m ? m[1].trim() : '';
 }
 
 function parseCallingPoints(block) {
   const re = /<lt8:callingPoint>([\s\S]*?)<\/lt8:callingPoint>/g;
-  const pts = [];
-  let m;
+  const pts = []; let m;
   while ((m = re.exec(block)) !== null) {
-    const s   = m[1];
+    const s = m[1];
     const get = tag => { const r = s.match(new RegExp('<lt8:' + tag + '>([^<]*)<')); return r ? r[1].trim() : ''; };
     pts.push({ name: get('locationName'), st: get('st'), at: get('at'), et: get('et') });
   }
@@ -597,29 +177,25 @@ function parseCallingPoints(block) {
 
 function parseServices(xml, type) {
   const re = /<lt8:service>([\s\S]*?)<\/lt8:service>/g;
-  const out = [];
-  let m;
+  const out = []; let m;
   while ((m = re.exec(xml)) !== null) {
     const s    = m[1];
     const dest = s.match(/<lt5:destination>[\s\S]*?<lt4:locationName>([^<]+)<\/lt4:locationName>/);
     const orig = s.match(/<lt5:origin>[\s\S]*?<lt4:locationName>([^<]+)<\/lt4:locationName>/);
     const time = getTag(s, 'sta') || getTag(s, 'std');
 
-    /* Previous calling points */
-    let prevPoints = [];
-    const prev = s.match(/<lt8:previousCallingPoints>([\s\S]*?)<\/lt8:previousCallingPoints>/);
-    if (prev) prevPoints = parseCallingPoints(prev[1]);
-
-    /* Subsequent calling points */
-    let nextPoints = [];
+    let prevPoints = [], nextPoints = [];
+    const prev   = s.match(/<lt8:previousCallingPoints>([\s\S]*?)<\/lt8:previousCallingPoints>/);
     const subseq = s.match(/<lt8:subsequentCallingPoints>([\s\S]*?)<\/lt8:subsequentCallingPoints>/);
+    if (prev)   prevPoints = parseCallingPoints(prev[1]);
     if (subseq) nextPoints = parseCallingPoints(subseq[1]);
 
-    /* Last seen for footnote */
+    // Last confirmed passed stop
     let lastSeen = null;
     for (const pt of prevPoints) {
       if (pt.at && pt.at !== 'No report' && pt.name) lastSeen = { loc: pt.name, at: pt.at };
     }
+    // stopsAway = next calling points that haven't been reached yet
     const stopsAway = nextPoints.filter(p => !p.at).length;
     if (lastSeen) lastSeen.stopsAway = stopsAway;
 
@@ -628,236 +204,159 @@ function parseServices(xml, type) {
       sortKey:     time.replace(':', ''),
       expected:    getTag(s, 'eta') || getTag(s, 'etd'),
       platform:    getTag(s, 'platform'),
-      origin:      orig  ? orig[1]  : '',
-      destination: dest  ? dest[1]  : '',
+      origin:      orig ? orig[1] : '',
+      destination: dest ? dest[1] : '',
       serviceID:   getTag(s, 'serviceID'),
-      lastSeen,
-      prevPoints,
-      nextPoints,
+      lastSeen, prevPoints, nextPoints,
     });
   }
   return out;
 }
 
-/* ── Chip ── */
 function chipFor(expected) {
   if (!expected) return null;
   const lo = expected.toLowerCase();
-  if (lo === 'on time')   return { cls: 'info', text: 'On time' };
-  if (lo === 'cancelled') return { cls: 'bad',  text: 'Cancelled' };
-  if (/^\d{2}:\d{2}$/.test(expected)) return { cls: 'warn', text: `Expected ${expected}` };
+  if (lo === 'on time')                return { cls: 'info', text: 'On time' };
+  if (lo === 'cancelled')              return { cls: 'bad',  text: 'Cancelled' };
+  if (/^\d{2}:\d{2}$/.test(expected)) return { cls: 'warn', text: 'Expected ' + expected };
   return null;
 }
 
 function chipHTML(chip) {
-  return chip ? `<span class="chip ${chip.cls}">${chip.text}</span>` : '';
+  return chip ? '<span class="chip ' + chip.cls + '">' + chip.text + '</span>' : '';
 }
 
-/* ── Detail label ── */
-function detailLabel(ls) {
-  const stops  = ls.stopsAway;
-  const isTime = /^\d{2}:\d{2}$/.test(ls.at);
-  if (stops === 0) return 'Arriving soon.';
-  const stopStr = stops === 1 ? '1 more stop.' : `${stops} more stops.`;
-  if (!isTime) return `Just departed ${ls.loc}, ${stopStr}`;
-  const nowMin  = new Date().getHours() * 60 + new Date().getMinutes();
-  const [h, mn] = ls.at.split(':').map(Number);
-  const diff    = nowMin - (h * 60 + mn);
-  const t       = diff <= 0 ? '' : diff === 1 ? ' 1 min ago' : diff < 60 ? ` ${diff} mins ago` : '';
-  return `Departed ${ls.loc}${t}, ${stopStr}`;
+/*
+  Detail label permutations:
+  - No lastSeen data                          → no row 3
+  - stopsAway === 0                           → "Just left X, due soon."
+  - minsRemaining < 8 (any stops)             → "Just left X, due soon."
+  - minsRemaining >= 8, stopsAway === 1       → "Just left X, 1 stop to go."
+  - minsRemaining >= 8, stopsAway > 1         → "Just left X, N stops to go."
+  - minsRemaining unknown, stopsAway === 1    → "Just left X, 1 stop to go."
+  - minsRemaining unknown, stopsAway > 1      → "Just left X, N stops to go."
+*/
+function detailLabel(lastSeen, arrTime) {
+  const stops = lastSeen.stopsAway;
+
+  const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
+  let minsRemaining = null;
+  if (arrTime && /^\d{2}:\d{2}$/.test(arrTime)) {
+    const [h, mn] = arrTime.split(':').map(Number);
+    minsRemaining = (h * 60 + mn) - nowMin;
+  }
+
+  const dueSoon = stops === 0 || (minsRemaining !== null && minsRemaining < 8);
+
+  if (dueSoon) return 'Just left ' + lastSeen.loc + ', due soon.';
+
+  const stopStr = stops === 1 ? '1 stop to go.' : stops + ' stops to go.';
+  return 'Just left ' + lastSeen.loc + ', ' + stopStr;
 }
 
-/* ── Headline ── */
+function toMins(t) {
+  const [h, mn] = t.split(':').map(Number); return h * 60 + mn;
+}
+
 function headlineFor(services, tab) {
   if (!services.length) return { cls: '', text: '' };
-  const toMins = t => { const [h, mn] = t.split(':').map(Number); return h * 60 + mn; };
   const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
   const isDep  = tab === 0;
 
   const cancelled = services.filter(s => (s.expected || '').toLowerCase() === 'cancelled');
   const delayed   = services.filter(s => /^\d{2}:\d{2}$/.test(s.expected || ''));
-  const upcoming  = services.filter(s => (s.expected || '').toLowerCase() !== 'cancelled')
-                            .sort((a, b) => toMins(a.time) - toMins(b.time));
+  const upcoming  = services
+    .filter(s => (s.expected || '').toLowerCase() !== 'cancelled')
+    .sort((a, b) => toMins(a.time) - toMins(b.time));
   const next = upcoming[0];
 
   if (cancelled.length && delayed.length) {
-    const c = cancelled[0], lbl = isDep ? `to ${c.destination}` : `from ${c.origin}`;
-    return { cls: 'bad', text: `The ${c.time} ${lbl} is cancelled, and ${delayed.length} train${delayed.length > 1 ? 's are' : ' is'} delayed.` };
+    const c = cancelled[0], lbl = isDep ? 'to ' + c.destination : 'from ' + c.origin;
+    return { cls: 'bad', text: 'The ' + c.time + ' ' + lbl + ' is cancelled, and ' + delayed.length + ' train' + (delayed.length > 1 ? 's are' : ' is') + ' delayed.' };
   }
   if (cancelled.length) {
-    const c = cancelled[0], lbl = isDep ? `to ${c.destination}` : `from ${c.origin}`;
-    const nxt = next ? ` The ${next.time} ${isDep ? 'to ' + next.destination : 'from ' + next.origin} is your best bet.` : '';
-    return { cls: 'bad', text: `The ${c.time} ${lbl} is cancelled.${nxt}` };
+    const c = cancelled[0], lbl = isDep ? 'to ' + c.destination : 'from ' + c.origin;
+    const nxt = next ? ' The ' + next.time + ' ' + (isDep ? 'to ' + next.destination : 'from ' + next.origin) + ' is your best bet.' : '';
+    return { cls: 'bad', text: 'The ' + c.time + ' ' + lbl + ' is cancelled.' + nxt };
   }
   if (delayed.length) {
-    const d = delayed[0], lbl = isDep ? `to ${d.destination}` : `from ${d.origin}`;
-    return { cls: 'warn', text: `The ${d.time} ${lbl} is running late — now expected ${d.expected}.` };
+    const d = delayed[0], lbl = isDep ? 'to ' + d.destination : 'from ' + d.origin;
+    return { cls: 'warn', text: 'The ' + d.time + ' ' + lbl + ' is running late — now expected ' + d.expected + '.' };
   }
   if (next) {
     const effectiveTime = /^\d{2}:\d{2}$/.test(next.expected || '') ? next.expected : next.time;
     const away = toMins(effectiveTime) - nowMin;
-    const lbl  = isDep ? `to ${next.destination}` : `from ${next.origin}`;
+    const lbl  = isDep ? 'to ' + next.destination : 'from ' + next.origin;
     const plat = next.platform || '?';
-    if (away <= 1) return { cls: '', text: `The ${next.time} ${lbl} is on time, arriving at Platform ${plat} soon.` };
-    const when = away < 60 ? `in ${away} mins` : `at ${next.time}`;
-    return { cls: '', text: `The ${next.time} ${lbl} is on time, arriving at Platform ${plat} ${when}.` };
+    const when = away <= 1 ? 'soon' : away < 60 ? 'in ' + away + ' mins' : 'at ' + next.time;
+    return { cls: '', text: 'The ' + next.time + ' ' + lbl + ' is on time, arriving at Platform ' + plat + ' ' + when + '.' };
   }
   return { cls: '', text: '' };
 }
 
 function updateBand() {
-  const services = activeTab === 0 ? depServices : arrServices;
-  const { cls, text } = headlineFor(services, activeTab);
-  document.getElementById('status-band').className = `status-band${cls ? ' ' + cls : ''}`;
+  const { cls, text } = headlineFor(activeTab === 0 ? depServices : arrServices, activeTab);
+  document.getElementById('status-band').className = 'status-band' + (cls ? ' ' + cls : '');
   document.getElementById('status-text').textContent = text;
 }
 
-/* ── Render cards ── */
 function renderList(services, elId, tab) {
   const el    = document.getElementById(elId);
   const isDep = tab === 0;
   if (!services.length) { el.innerHTML = '<div class="message">No trains found</div>'; return; }
 
-  el.innerHTML = services.map((s, i) => {
+  el.innerHTML = services.map(s => {
     const chip   = chipFor(s.expected);
     const prep   = isDep ? 'to' : 'from';
     const dest   = isDep ? s.destination : s.origin;
-    return `<div class="card" onclick="openSheet(${tab === 0 ? 'depServices' : 'arrServices'}[${i}], ${tab})">
-  <div class="card-rows">
-    <div class="card-row-top">
-      <div class="card-row-top-left">
-        <span class="card-time">${s.time}</span>${chipHTML(chip)}
-      </div>
-      <div class="card-row-top-right">${s.platform ? `<span class="card-platform">Platform ${s.platform}</span>` : ''}</div>
-    </div>
-    <div class="card-row-route">
-      <span class="card-prep">${prep}</span>
-      <span class="card-dest">${dest}</span>
-    </div>
-  </div>
-</div>`;
+    const detail = (s.lastSeen && (s.expected || '').toLowerCase() !== 'cancelled')
+      ? detailLabel(s.lastSeen, s.time) : '';
+
+    const isLate = /^\d{2}:\d{2}$/.test(s.expected || '');
+    return '<div class="card' + (isLate ? ' late' : '') + '">'
+      + '<div class="card-row-1">'
+        + '<div class="card-row-1-left">'
+          + '<span class="card-time">' + s.time + '</span>' + chipHTML(chip)
+        + '</div>'
+        + '<div class="card-row-1-right">' + (s.platform ? '<span class="card-platform">Platform ' + s.platform + '</span>' : '') + '</div>'
+      + '</div>'
+      + '<div class="card-row-2">'
+        + '<span class="card-prep">' + prep + '</span>'
+        + '<span class="card-dest">' + dest + '</span>'
+      + '</div>'
+      + (detail ? '<div class="card-row-3">' + detail + '</div>' : '')
+      + '</div>';
   }).join('');
 }
 
-/* ═══════════════════════════════
-   BOTTOM SHEET
-═══════════════════════════════ */
-
-function buildNodeList(s, isDep) {
-  const isLate = /^\d{2}:\d{2}$/.test(s.expected || '');
-
-  const passed   = s.prevPoints.filter(p => p.at !== '');
-  const unpassed = s.prevPoints.filter(p => p.at === '');
-
-  // Each item: { dot, lineColor, name }
-  // lineColor = CSS custom property value for --lc
-  const stops = [];
-
-  if (passed.length === 0 && unpassed.length === 0) {
-    // No data — just Slaithwaite
-    stops.push({ dot: 'grey', lc: null, name: 'Slaithwaite' });
-  } else if (passed.length === 0) {
-    // All unpassed — everything grey
-    stops.push({ dot: 'grey', lc: '#D0D0D0', name: unpassed[0].name });
-    for (let i = 1; i < unpassed.length; i++)
-      stops.push({ dot: 'grey', lc: '#D0D0D0', name: unpassed[i].name });
-    stops.push({ dot: 'grey', lc: null, name: 'Slaithwaite' });
-  } else {
-    // Origin
-    stops.push({ dot: 'blue', lc: passed.length > 1 ? '#00189F' : 'linear-gradient(to bottom,#00189F 50%,#D0D0D0 50%)', name: passed[0].name });
-    // Middle passed
-    for (let i = 1; i < passed.length; i++) {
-      const isLast = i === passed.length - 1;
-      const lc = isLast ? 'linear-gradient(to bottom,#00189F 50%,#D0D0D0 50%)' : '#00189F';
-      stops.push({ dot: 'blue', lc, name: passed[i].name });
-    }
-    // Unpassed stops
-    for (const pt of unpassed)
-      stops.push({ dot: 'grey', lc: '#D0D0D0', name: pt.name });
-    // Slaithwaite
-    stops.push({ dot: 'grey', lc: null, name: 'Slaithwaite' });
-  }
-
-  return stops.map(({ dot, lc, name }) =>
-    `<div class="node-item"${lc ? ` style="--lc:${lc}"` : ''}>
-  <div class="node-dot ${dot}"></div>
-  <div class="node-label">${name}</div>
-</div>`
-  ).join('');
-}
-
-function openSheet(s, tab) {
-  const isDep = tab === 0;
-  const chip  = chipFor(s.expected);
-  const expTime = /^\d{2}:\d{2}$/.test(s.expected || '') ? s.expected : '';
-
-  document.getElementById('sheet-time').textContent = s.time;
-  document.getElementById('sheet-exp').textContent  = expTime ? `Exp ${expTime}` : '';
-  document.getElementById('sheet-direction').textContent = isDep ? 'Departing for' : 'Arriving from';
-  document.getElementById('sheet-dest').textContent = isDep ? s.destination : s.origin;
-  document.getElementById('sheet-chip-wrap').innerHTML = chipHTML(chip);
-  document.getElementById('node-list').innerHTML = buildNodeList(s, isDep);
-
-  document.getElementById('sheet-overlay').classList.add('open');
-  document.getElementById('sheet').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function closeSheet() {
-  document.getElementById('sheet-overlay').classList.remove('open');
-  document.getElementById('sheet').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-/* Swipe down to close sheet */
-let sheetTouchY = 0;
-document.getElementById('sheet').addEventListener('touchstart', e => {
-  sheetTouchY = e.touches[0].clientY;
-}, { passive: true });
-document.getElementById('sheet').addEventListener('touchend', e => {
-  const dy = e.changedTouches[0].clientY - sheetTouchY;
-  if (dy > 80) closeSheet();
-}, { passive: true });
-
-/* ── Load ── */
 async function load() {
   document.getElementById('status-updated').textContent = 'Updating...';
   try {
     const [dr, ar] = await Promise.all([
-      fetch(`${WORKER}/?crs=SWT&type=dep`),
-      fetch(`${WORKER}/?crs=SWT&type=arr`),
+      fetch(WORKER + '/?crs=SWT&type=dep'),
+      fetch(WORKER + '/?crs=SWT&type=arr'),
     ]);
     const [dx, ax] = await Promise.all([dr.text(), ar.text()]);
 
     const deps = parseServices(dx, 'dep').sort((a, b) => a.sortKey.localeCompare(b.sortKey));
     const arrs = parseServices(ax, 'arr').sort((a, b) => a.sortKey.localeCompare(b.sortKey));
 
-    /* Merge dep + arr by serviceID so each service has BOTH prevPoints AND nextPoints */
     const arrMap = new Map(arrs.map(s => [s.serviceID, s]));
     const depMap = new Map(deps.map(s => [s.serviceID, s]));
-
     const allIDs = new Set([...arrMap.keys(), ...depMap.keys()]);
+
     const merged = [...allIDs].map(id => {
-      const arr = arrMap.get(id);
-      const dep = depMap.get(id);
-      // Prefer arr for metadata (has sta), dep for nextPoints
-      const base = arr || dep;
-      return {
-        ...base,
-        prevPoints: arr ? arr.prevPoints : [],
-        nextPoints: dep ? dep.nextPoints : [],
-      };
+      const arr = arrMap.get(id), dep = depMap.get(id);
+      return { ...(arr || dep), prevPoints: arr ? arr.prevPoints : [], nextPoints: dep ? dep.nextPoints : [] };
     }).sort((a, b) => a.sortKey.localeCompare(b.sortKey));
 
-    depServices = merged;
-    arrServices = merged;
-
+    depServices = arrServices = merged;
     renderList(depServices, 'trains-dep', 0);
     renderList(arrServices, 'trains-arr', 1);
 
     const now = new Date();
     document.getElementById('status-updated').textContent =
-      `Updated ${now.getHours()}:${String(now.getMinutes()).padStart(2, '0')}`;
+      'Updated ' + now.getHours() + ':' + String(now.getMinutes()).padStart(2, '0');
 
     updateBand();
     adjustTop();
