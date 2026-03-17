@@ -48,18 +48,25 @@ body { font-family: 'Onest', sans-serif; background: #fff; min-height: 100vh; -w
 .tab-panel { width: 50%; min-width: 0; }
 
 /* ── Cards container — gap: 1px, bg: #F3F3F3 ── */
-.cards { display: flex; flex-direction: column; gap: 1px; background: #D0D0D0; }
+.cards { display: flex; flex-direction: column; gap: 1px; background: #F3F3F3; }
 
-/* ── Card — padding: 16px 24px, gap: 8px ── */
+/* Card — padding: 16px 24px, gap: 8px */
 .card { background: #fff; padding: 16px 24px; display: flex; flex-direction: column; gap: 8px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
 .card:active { background: #FAFAFA; }
 
-/* Row 1 */
+/* Rows — gap: 4px */
+.card-rows { display: flex; flex-direction: column; gap: 8px; }
+
+/* Row 1: Left (time + chip, hug) · Right (platform, flex-end) */
 .card-row-top { display: flex; flex-direction: row; align-items: center; gap: 8px; }
-.card-time-group { display: flex; flex-direction: row; align-items: center; gap: 8px; }
-.card-time { font-size: 22px; font-weight: 600; line-height: 1.273; color: #1A1A1A; }
-.card-exp  { font-size: 22px; font-weight: 400; line-height: 1.273; color: #1A1A1A; }
-.card-chip-wrap { flex: 1; display: flex; justify-content: flex-end; }
+.card-row-top-left { display: flex; flex-direction: row; align-items: center; gap: 8px; }
+.card-row-top-right { display: flex; flex-direction: row; justify-content: flex-end; align-items: center; gap: 6px; flex: 1; }
+
+/* Title 2 Emphasis — Onest 600 22px #1A1A1A */
+.card-time { font-size: 22px; font-weight: 600; line-height: 1.273; color: #1A1A1A; flex-shrink: 0; }
+
+/* Footnote — Onest 400 13px #767676 */
+.card-platform { font-size: 13px; font-weight: 400; line-height: 1.385; color: #767676; }
 
 /* Chips */
 .chip { display: inline-flex; align-items: center; justify-content: center; padding: 4px 8px 3px; height: 24px; border-radius: 6px; font-family: 'Onest', sans-serif; font-size: 13px; font-weight: 600; line-height: 1.385; color: #1A1A1A; white-space: nowrap; border: 1px solid transparent; }
@@ -67,13 +74,34 @@ body { font-family: 'Onest', sans-serif; background: #fff; min-height: 100vh; -w
 .chip.warn { background: #FFF5CC; }
 .chip.bad  { background: #F5BFBF; }
 
-/* Row 2 — gap: 6px */
+/* Row 2: "to/from" (Callout 400 16px grey) + destination (Callout 400 16px dark) */
 .card-row-route { display: flex; flex-direction: row; align-items: center; gap: 6px; }
 .card-prep { font-size: 16px; font-weight: 400; line-height: 1.3125; color: #767676; flex-shrink: 0; }
-.card-dest { font-size: 16px; font-weight: 600; line-height: 1.3125; color: #767676; }
+.card-dest { font-size: 16px; font-weight: 400; line-height: 1.3125; color: #1A1A1A; }
 
-/* Row 3 */
-.card-detail { font-size: 13px; font-weight: 400; line-height: 1.385; color: #767676; }
+
+/* ── Station node list ── */
+.node-list { display: flex; flex-direction: column; }
+
+.node-item {
+  display: flex; flex-direction: row; align-items: center;
+  gap: 16px; padding-bottom: 24px; position: relative;
+}
+.node-item:last-child { padding-bottom: 0; }
+
+/* Continuous vertical line via ::after — runs from dot centre to bottom of item */
+.node-item:not(:last-child)::after {
+  content: ''; position: absolute;
+  left: 5px; top: 18px; bottom: 0; width: 2px;
+  background: var(--lc, #00189F);
+}
+
+.node-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; position: relative; z-index: 1; }
+.node-dot.blue { background: #00189F; }
+.node-dot.grey { background: #D0D0D0; }
+
+.node-label { font-size: 22px; font-weight: 600; line-height: 1.273; color: #1A1A1A; }
+
 
 /* ── Empty ── */
 .message { padding: 24px; font-size: 16px; color: #767676; text-align: center; }
@@ -96,7 +124,7 @@ body { font-family: 'Onest', sans-serif; background: #fff; min-height: 100vh; -w
   position: fixed; bottom: 0; left: 50%; z-index: 201;
   transform: translateX(-50%) translateY(100%);
   width: 100%; max-width: 393px;
-  max-height: 90vh;
+  height: 80vh;
   background: #fff;
   border-radius: 32px 32px 0 0;
   display: flex; flex-direction: column;
@@ -172,7 +200,7 @@ body { font-family: 'Onest', sans-serif; background: #fff; min-height: 100vh; -w
   position: fixed; bottom: 0; left: 50%; z-index: 201;
   transform: translateX(-50%) translateY(100%);
   width: 100%; max-width: 393px;
-  max-height: 90vh;
+  height: 80vh;
   background: #fff;
   border-radius: 32px 32px 0 0;
   display: flex; flex-direction: column;
@@ -249,7 +277,7 @@ body { font-family: 'Onest', sans-serif; background: #fff; min-height: 100vh; -w
   position: fixed; bottom: 0; left: 50%; z-index: 201;
   transform: translateX(-50%) translateY(100%);
   width: 100%; max-width: 393px;
-  max-height: 90vh;
+  height: 80vh;
   background: #fff;
   border-radius: 32px 32px 0 0;
   display: flex; flex-direction: column;
@@ -347,7 +375,7 @@ body { font-family: 'Onest', sans-serif; background: #fff; min-height: 100vh; -w
   position: fixed; bottom: 0; left: 50%; z-index: 201;
   transform: translateX(-50%) translateY(100%);
   width: 100%; max-width: 393px;
-  max-height: 90vh;
+  height: 80vh;
   background: #fff;
   border-radius: 32px 32px 0 0;
   display: flex; flex-direction: column;
@@ -427,7 +455,7 @@ body { font-family: 'Onest', sans-serif; background: #fff; min-height: 100vh; -w
 .node-list  { display: flex; flex-direction: column; }
 .node-item  { display: flex; flex-direction: row; align-items: stretch; }
 .node-track { display: flex; flex-direction: column; align-items: center; width: 28px; flex-shrink: 0; }
-.node-dot   { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+.node-dot   { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; }
 .node-dot.blue { background: #00189F; }
 .node-dot.grey { background: #D0D0D0; }
 .node-line  { width: 2px; flex: 1; }
@@ -435,7 +463,7 @@ body { font-family: 'Onest', sans-serif; background: #fff; min-height: 100vh; -w
 .node-line.grey     { background: #D0D0D0; }
 .node-line.progress { background: linear-gradient(to bottom, #00189F 50%, #D0D0D0 50%); }
 .node-line.none     { background: transparent; }
-.node-label { font-size: 22px; font-weight: 600; line-height: 1.273; color: #1A1A1A; padding: 0 0 20px 4px; }
+.node-label { font-size: 22px; font-weight: 600; line-height: 1.273; color: #1A1A1A; padding: 0 0 16px 12px; }
 .node-label.last { padding-bottom: 0; }
 </style>
 </head>
@@ -617,7 +645,7 @@ function chipFor(expected) {
   const lo = expected.toLowerCase();
   if (lo === 'on time')   return { cls: 'info', text: 'On time' };
   if (lo === 'cancelled') return { cls: 'bad',  text: 'Cancelled' };
-  if (/^\d{2}:\d{2}$/.test(expected)) return { cls: 'warn', text: 'Running late' };
+  if (/^\d{2}:\d{2}$/.test(expected)) return { cls: 'warn', text: `Expected ${expected}` };
   return null;
 }
 
@@ -666,7 +694,8 @@ function headlineFor(services, tab) {
     return { cls: 'warn', text: `The ${d.time} ${lbl} is running late — now expected ${d.expected}.` };
   }
   if (next) {
-    const away = toMins(next.time) - nowMin;
+    const effectiveTime = /^\d{2}:\d{2}$/.test(next.expected || '') ? next.expected : next.time;
+    const away = toMins(effectiveTime) - nowMin;
     const lbl  = isDep ? `to ${next.destination}` : `from ${next.origin}`;
     const plat = next.platform || '?';
     if (away <= 1) return { cls: '', text: `The ${next.time} ${lbl} is on time, arriving at Platform ${plat} soon.` };
@@ -690,24 +719,22 @@ function renderList(services, elId, tab) {
   if (!services.length) { el.innerHTML = '<div class="message">No trains found</div>'; return; }
 
   el.innerHTML = services.map((s, i) => {
-    const chip    = chipFor(s.expected);
-    const expTime = /^\d{2}:\d{2}$/.test(s.expected || '') ? s.expected : '';
-    const prep    = isDep ? 'to' : 'from';
-    const dest    = isDep ? s.destination : s.origin;
-    const detail  = s.lastSeen ? detailLabel(s.lastSeen) : '';
-
+    const chip   = chipFor(s.expected);
+    const prep   = isDep ? 'to' : 'from';
+    const dest   = isDep ? s.destination : s.origin;
     return `<div class="card" onclick="openSheet(${tab === 0 ? 'depServices' : 'arrServices'}[${i}], ${tab})">
-  <div class="card-row-top">
-    <div class="card-time-group">
-      <span class="card-time">${s.time}</span>${expTime ? `<span class="card-exp">Exp ${expTime}</span>` : ''}
+  <div class="card-rows">
+    <div class="card-row-top">
+      <div class="card-row-top-left">
+        <span class="card-time">${s.time}</span>${chipHTML(chip)}
+      </div>
+      <div class="card-row-top-right">${s.platform ? `<span class="card-platform">Platform ${s.platform}</span>` : ''}</div>
     </div>
-    <div class="card-chip-wrap">${chipHTML(chip)}</div>
+    <div class="card-row-route">
+      <span class="card-prep">${prep}</span>
+      <span class="card-dest">${dest}</span>
+    </div>
   </div>
-  <div class="card-row-route">
-    <span class="card-prep">${prep}</span>
-    <span class="card-dest">${dest}</span>
-  </div>${detail ? `
-  <div class="card-detail">${detail}</div>` : ''}
 </div>`;
   }).join('');
 }
@@ -719,60 +746,44 @@ function renderList(services, elId, tab) {
 function buildNodeList(s, isDep) {
   const isLate = /^\d{2}:\d{2}$/.test(s.expected || '');
 
-  // Split prevPoints into passed (at has value) and unpassed (at empty)
   const passed   = s.prevPoints.filter(p => p.at !== '');
   const unpassed = s.prevPoints.filter(p => p.at === '');
 
-  const item = (dotCls, lineCls, name, isLast) =>
-    `<div class="node-item">
-  <div class="node-track">
-    <div class="node-dot ${dotCls}"></div>
-    <div class="node-line ${isLast ? 'none' : lineCls}"></div>
-  </div>
-  <div class="node-label${isLast ? ' last' : ''}">${name}</div>
-</div>`;
+  // Each item: { dot, lineColor, name }
+  // lineColor = CSS custom property value for --lc
+  const stops = [];
 
-  let html = '';
-  const allStops = s.prevPoints; // all stops in order
-
-  if (passed.length === 0) {
-    // Train hasn't passed any stops — show everything grey
-    if (allStops.length === 0) {
-      // No data at all — just show Slaithwaite
-      html += item('grey', 'none', 'Slaithwaite', true);
-    } else {
-      // Show origin and all stops grey, Slaithwaite grey at end
-      html += item('grey', 'grey', allStops[0].name, false);
-      for (let i = 1; i < allStops.length; i++) {
-        html += item('grey', 'grey', allStops[i].name, false);
-      }
-      html += item('grey', 'none', 'Slaithwaite', true);
-    }
+  if (passed.length === 0 && unpassed.length === 0) {
+    // No data — just Slaithwaite
+    stops.push({ dot: 'grey', lc: null, name: 'Slaithwaite' });
+  } else if (passed.length === 0) {
+    // All unpassed — everything grey
+    stops.push({ dot: 'grey', lc: '#D0D0D0', name: unpassed[0].name });
+    for (let i = 1; i < unpassed.length; i++)
+      stops.push({ dot: 'grey', lc: '#D0D0D0', name: unpassed[i].name });
+    stops.push({ dot: 'grey', lc: null, name: 'Slaithwaite' });
   } else {
-    // Train has passed some stops
-    // Origin — first passed stop, blue. Line is progress if it's the only passed stop.
-    html += item('blue', passed.length === 1 ? 'progress' : 'blue', passed[0].name, false);
-
-    // Remaining passed stops — blue, last one gets progress connector out
+    // Origin
+    stops.push({ dot: 'blue', lc: passed.length > 1 ? '#00189F' : 'linear-gradient(to bottom,#00189F 50%,#D0D0D0 50%)', name: passed[0].name });
+    // Middle passed
     for (let i = 1; i < passed.length; i++) {
-      const isLastPassed = i === passed.length - 1;
-      html += item('blue', isLastPassed ? 'progress' : 'blue', passed[i].name, false);
+      const isLast = i === passed.length - 1;
+      const lc = isLast ? 'linear-gradient(to bottom,#00189F 50%,#D0D0D0 50%)' : '#00189F';
+      stops.push({ dot: 'blue', lc, name: passed[i].name });
     }
-
-    // If there are unpassed stops between last passed and Slaithwaite
-    if (unpassed.length > 0) {
-      html += item('grey', 'grey', unpassed[0].name, false);
-      for (let i = 1; i < unpassed.length; i++) {
-        html += item('grey', 'grey', unpassed[i].name, false);
-      }
-      html += item('grey', 'none', 'Slaithwaite', true);
-    } else {
-      // Progress connector straight into Slaithwaite
-      html += item('grey', 'none', 'Slaithwaite', true);
-    }
+    // Unpassed stops
+    for (const pt of unpassed)
+      stops.push({ dot: 'grey', lc: '#D0D0D0', name: pt.name });
+    // Slaithwaite
+    stops.push({ dot: 'grey', lc: null, name: 'Slaithwaite' });
   }
 
-  return html;
+  return stops.map(({ dot, lc, name }) =>
+    `<div class="node-item"${lc ? ` style="--lc:${lc}"` : ''}>
+  <div class="node-dot ${dot}"></div>
+  <div class="node-label">${name}</div>
+</div>`
+  ).join('');
 }
 
 function openSheet(s, tab) {
