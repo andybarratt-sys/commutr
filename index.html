@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<title>Slaithwaite</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<title>Departr</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;600&display=swap" rel="stylesheet">
@@ -192,8 +193,9 @@ function parseServices(xml, type) {
     for (const pt of prevPoints) {
       if (pt.at && pt.at !== 'No report' && pt.name) lastSeen = { loc: pt.name, at: pt.at };
     }
-    // stopsAway = next calling points that haven't been reached yet
-    const stopsAway = nextPoints.filter(p => !p.at).length;
+    // stopsAway = prevPoints that haven't been reached yet (at is empty)
+    // These are stops between the last confirmed passed stop and Slaithwaite
+    const stopsAway = prevPoints.filter(p => !p.at).length;
     if (lastSeen) lastSeen.stopsAway = stopsAway;
 
     out.push({
