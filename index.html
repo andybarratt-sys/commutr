@@ -10,82 +10,46 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;600&display=swap" rel="stylesheet">
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { scrollbar-width: none; -ms-overflow-style: none; overflow-x: hidden; }
-html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
-body { font-family: 'Onest', sans-serif; background: #fff; min-height: 100vh; -webkit-font-smoothing: antialiased; }
-
-.board { max-width: 393px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; background: #fff; }
-
-/* ── Fixed top ── */
-.top { position: fixed; top: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 393px; z-index: 100; background: #fff; }
-
-/* ── Header ── */
-.header { padding: calc(env(safe-area-inset-top) + 24px) 24px 32px; display: flex; flex-direction: column; gap: 16px; }
-.station { font-size: 28px; font-weight: 600; line-height: 1.214; color: #1A1A1A; }
-.tab-bar { display: flex; align-items: center; gap: 16px; }
-.tab-btn { font-family: 'Onest', sans-serif; font-size: 22px; font-weight: 400; line-height: 1.273; color: #767676; background: none; border: none; border-bottom: 2px solid transparent; padding: 0 0 2px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
-.tab-btn.active { font-weight: 600; color: #1A1A1A; border-bottom-color: #1A1A1A; }
-
-/* ── Status band ── */
-.status-band { padding: 24px; display: flex; flex-direction: column; gap: 8px; background: #00189F; transition: background 0.4s ease; }
-.status-band.warn { background: #FFCA00; }
-.status-band.bad  { background: #D3131A; }
-.status-updated { font-size: 16px; font-weight: 400; line-height: 1.3125; color: #fff; }
-.status-band.warn .status-updated { color: #1A1A1A; }
-.status-text { font-size: 16px; font-weight: 600; line-height: 1.3125; color: #fff; min-height: 1.3125em; }
-.status-band.warn .status-text { color: #1A1A1A; }
-
-/* ── Swipe ── */
-.swipe-container { flex: 1; overflow: hidden; }
-.swipe-track { display: flex; width: 200%; transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); will-change: transform; }
-.tab-panel { width: 50%; min-width: 0; padding-top: 24px; }
-
-/* ── Cards ── */
-.cards { display: flex; flex-direction: column; gap: 1px; background: #F3F3F3; }
-.card { background: #fff; padding: 16px 24px; display: flex; flex-direction: column; gap: 8px; }
-.card.late { gap: 16px; }
-
-/* Row 1 */
-.card-row-1       { display: flex; align-items: center; gap: 8px; }
-.card-row-1-left  { display: flex; align-items: center; gap: 8px; }
-.card-row-1-right { flex: 1; display: flex; justify-content: flex-end; align-items: center; }
-.card-time     { font-size: 22px; font-weight: 600; line-height: 1.273; color: #1A1A1A; flex-shrink: 0; }
-.card-platform { font-size: 13px; font-weight: 400; line-height: 1.385; color: #767676; }
-
-/* Chips */
-.chip { display: inline-flex; align-items: center; justify-content: center; padding: 4px 8px 3px; height: 24px; border-radius: 6px; font-family: 'Onest', sans-serif; font-size: 13px; font-weight: 600; color: #1A1A1A; white-space: nowrap; border: 1px solid transparent; }
-.chip.info { background: transparent; border-color: #D8DCF0; }
-.chip.warn { background: #FFF5CC; }
-.chip.bad  { background: #F5BFBF; }
-
-/* Row 2 */
-.card-row-2 { display: flex; align-items: center; gap: 6px; }
-.card-prep  { font-size: 16px; font-weight: 400; line-height: 1.3125; color: #767676; flex-shrink: 0; }
-.card-dest  { font-size: 16px; font-weight: 400; line-height: 1.3125; color: #1A1A1A; }
-
-/* Row 3 */
-.card-row-3 { font-size: 16px; font-weight: 400; line-height: 1.3125; color: #767676; }
-
-/* ── Empty state ── */
-.message { padding: 24px; font-size: 16px; color: #767676; text-align: center; }
-
-/* ── Refresh button — 72×72px, #1A1A1A, padding: 8px, no shadow ── */
-.refresh-btn {
-  position: fixed;
-  bottom: calc(env(safe-area-inset-bottom) + 24px);
-  right: 24px;
-  width: 72px; height: 72px;
-  border-radius: 100px;
-  background: #1A1A1A;
-  border: none; cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  padding: 8px;
-  -webkit-tap-highlight-color: transparent;
-  z-index: 50;
-}
-.refresh-btn:active { opacity: 0.7; }
-.refresh-btn svg { width: 24px; height: 24px; display: block; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{scrollbar-width:none;-ms-overflow-style:none;overflow-x:hidden}
+html::-webkit-scrollbar,body::-webkit-scrollbar{display:none}
+body{font-family:'Onest',sans-serif;background:#fff;min-height:100vh;-webkit-font-smoothing:antialiased}
+.board{max-width:393px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;background:#fff}
+.top{position:fixed;top:0;left:50%;transform:translateX(-50%);width:100%;max-width:393px;z-index:100;background:#fff}
+.header{padding:calc(env(safe-area-inset-top) + 24px) 24px 32px;display:flex;flex-direction:column;gap:16px}
+.station{font-size:28px;font-weight:600;line-height:1.214;color:#1A1A1A}
+.tab-bar{display:flex;align-items:center;gap:16px}
+.tab-btn{font-family:'Onest',sans-serif;font-size:22px;font-weight:400;line-height:1.273;color:#767676;background:none;border:none;border-bottom:2px solid transparent;padding:0 0 2px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.tab-btn.active{font-weight:600;color:#1A1A1A;border-bottom-color:#1A1A1A}
+.status-band{padding:24px;display:flex;flex-direction:column;gap:8px;background:#00189F;transition:background 0.4s ease}
+.status-band.warn{background:#FFCA00}
+.status-band.bad{background:#D3131A}
+.status-text{font-size:16px;font-weight:600;line-height:1.3125;color:#fff;min-height:1.3125em}
+.status-updated{font-size:16px;font-weight:400;line-height:1.3125;color:#fff}
+.status-band.warn .status-text,.status-band.warn .status-updated{color:#1A1A1A}
+.swipe-container{flex:1;overflow:hidden}
+.swipe-track{display:flex;width:200%;transition:transform 0.35s cubic-bezier(0.4,0,0.2,1);will-change:transform}
+.tab-panel{width:50%;min-width:0;padding-top:24px}
+.cards{display:flex;flex-direction:column;gap:1px;background:#F3F3F3}
+.card{background:#fff;padding:16px 24px;display:flex;flex-direction:column;gap:8px}
+.card.late{gap:16px}
+.card-row-1{display:flex;align-items:center;gap:8px}
+.card-row-1-left{display:flex;align-items:center;gap:8px}
+.card-row-1-right{flex:1;display:flex;justify-content:flex-end;align-items:center}
+.card-time{font-size:22px;font-weight:600;line-height:1.273;color:#1A1A1A;flex-shrink:0}
+.card-platform{font-size:13px;font-weight:400;line-height:1.385;color:#767676}
+.chip{display:inline-flex;align-items:center;justify-content:center;padding:4px 8px 3px;height:24px;border-radius:6px;font-family:'Onest',sans-serif;font-size:13px;font-weight:600;color:#1A1A1A;white-space:nowrap;border:1px solid transparent}
+.chip.info{background:transparent;border-color:#D8DCF0}
+.chip.warn{background:#FFF5CC}
+.chip.bad{background:#F5BFBF}
+.card-row-2{display:flex;align-items:center;gap:6px}
+.card-prep{font-size:16px;font-weight:400;line-height:1.3125;color:#767676;flex-shrink:0}
+.card-dest{font-size:16px;font-weight:400;line-height:1.3125;color:#1A1A1A}
+.card-row-3{font-size:16px;font-weight:400;line-height:1.3125;color:#767676}
+.message{padding:24px;font-size:16px;color:#767676;text-align:center}
+.refresh-btn{position:fixed;bottom:calc(env(safe-area-inset-bottom) + 24px);right:24px;width:72px;height:72px;border-radius:100px;background:#1A1A1A;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:8px;-webkit-tap-highlight-color:transparent;z-index:50}
+.refresh-btn:active{opacity:0.7}
+.refresh-btn svg{width:24px;height:24px;display:block}
 </style>
 </head>
 <body>
@@ -95,281 +59,161 @@ body { font-family: 'Onest', sans-serif; background: #fff; min-height: 100vh; -w
       <div class="station">Slaithwaite</div>
       <div class="tab-bar">
         <button class="tab-btn active" id="tab-dep" onclick="switchTab(0)">Departures</button>
-        <button class="tab-btn"        id="tab-arr" onclick="switchTab(1)">Arrivals</button>
+        <button class="tab-btn" id="tab-arr" onclick="switchTab(1)">Arrivals</button>
       </div>
     </div>
     <div class="status-band" id="status-band">
-      <div class="status-text"    id="status-text"></div>
+      <div class="status-text" id="status-text"></div>
       <div class="status-updated" id="status-updated">Loading...</div>
     </div>
   </div>
-
   <div class="swipe-container" id="swipe-container">
     <div class="swipe-track" id="swipe-track">
-      <div class="tab-panel">
-        <div class="cards" id="trains-dep"><div class="message">Fetching trains…</div></div>
-      </div>
-      <div class="tab-panel">
-        <div class="cards" id="trains-arr"><div class="message">Fetching trains…</div></div>
-      </div>
+      <div class="tab-panel"><div class="cards" id="trains-dep"><div class="message">Fetching trains…</div></div></div>
+      <div class="tab-panel"><div class="cards" id="trains-arr"><div class="message">Fetching trains…</div></div></div>
     </div>
   </div>
 </div>
-
-<!-- Refresh button -->
-<button class="refresh-btn" id="refresh-btn" onclick="load()" aria-label="Refresh">
-  <svg viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 20q-3.35 0-5.675-2.325T4 12q0-3.35 2.325-5.675T12 4q1.725 0 3.3.713T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12q0 2.5 1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20Z"/>
-  </svg>
+<button class="refresh-btn" onclick="load()" aria-label="Refresh">
+  <svg viewBox="0 0 24 24" fill="white"><path d="M12 20q-3.35 0-5.675-2.325T4 12q0-3.35 2.325-5.675T12 4q1.725 0 3.3.713T18 6.75V4h2v7h-7V9h4.2q-.8-1.4-2.187-2.2T12 6Q9.5 6 7.75 7.75T6 12q0 2.5 1.75 4.25T12 18q1.925 0 3.475-1.1T17.65 14h2.1q-.7 2.65-2.85 4.325T12 20Z"/></svg>
 </button>
-
 <script>
-'use strict';
+const WORKER='https://icy-art-aabb.andybarratt.workers.dev';
+let services=[],activeTab=0,headerTimer=null;
 
-const WORKER = 'https://icy-art-aabb.andybarratt.workers.dev';
-let depServices = [], arrServices = [], activeTab = 0, headerTimer = null;
+function adjustTop(){document.getElementById('swipe-container').style.marginTop=document.getElementById('top').offsetHeight+'px'}
 
-function adjustTop() {
-  document.getElementById('swipe-container').style.marginTop =
-    document.getElementById('top').offsetHeight + 'px';
-}
-
-function switchTab(idx) {
-  activeTab = idx;
-  document.getElementById('tab-dep').classList.toggle('active', idx === 0);
-  document.getElementById('tab-arr').classList.toggle('active', idx === 1);
-  document.getElementById('swipe-track').style.transform =
-    idx === 0 ? 'translateX(0)' : 'translateX(-50%)';
+function switchTab(idx){
+  activeTab=idx;
+  document.getElementById('tab-dep').classList.toggle('active',idx===0);
+  document.getElementById('tab-arr').classList.toggle('active',idx===1);
+  document.getElementById('swipe-track').style.transform=idx===0?'translateX(0)':'translateX(-50%)';
   clearTimeout(headerTimer);
-  headerTimer = setTimeout(() => { updateBand(); adjustTop(); }, 500);
+  headerTimer=setTimeout(()=>{updateBand();adjustTop();},500);
 }
 
-let tx = 0, ty = 0;
-document.getElementById('swipe-container').addEventListener('touchstart', e => {
-  tx = e.touches[0].clientX; ty = e.touches[0].clientY;
-}, { passive: true });
-document.getElementById('swipe-container').addEventListener('touchend', e => {
-  const dx = e.changedTouches[0].clientX - tx;
-  const dy = e.changedTouches[0].clientY - ty;
-  if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
-    if (dx < 0 && activeTab === 0) switchTab(1);
-    if (dx > 0 && activeTab === 1) switchTab(0);
-  }
-}, { passive: true });
+let tx=0,ty=0;
+document.getElementById('swipe-container').addEventListener('touchstart',e=>{tx=e.touches[0].clientX;ty=e.touches[0].clientY},{passive:true});
+document.getElementById('swipe-container').addEventListener('touchend',e=>{
+  const dx=e.changedTouches[0].clientX-tx,dy=e.changedTouches[0].clientY-ty;
+  if(Math.abs(dx)>Math.abs(dy)&&Math.abs(dx)>40){if(dx<0&&activeTab===0)switchTab(1);if(dx>0&&activeTab===1)switchTab(0);}
+},{passive:true});
 
-function getTag(xml, tag) {
-  const m = xml.match(new RegExp('<[^>]*:?' + tag + '[^>]*>([^<]*)<'));
-  return m ? m[1].trim() : '';
-}
+function getTag(xml,tag){const m=xml.match(new RegExp('<[^>]*:?'+tag+'[^>]*>([^<]*)<'));return m?m[1].trim():'';}
 
-function parseCallingPoints(block) {
-  const re = /<lt8:callingPoint>([\s\S]*?)<\/lt8:callingPoint>/g;
-  const pts = []; let m;
-  while ((m = re.exec(block)) !== null) {
-    const s = m[1];
-    const get = tag => { const r = s.match(new RegExp('<lt8:' + tag + '>([^<]*)<')); return r ? r[1].trim() : ''; };
-    pts.push({ name: get('locationName'), st: get('st'), at: get('at'), et: get('et') });
-  }
-  return pts;
-}
-
-function parseServices(xml, type) {
-  const re = /<lt8:service>([\s\S]*?)<\/lt8:service>/g;
-  const out = []; let m;
-  while ((m = re.exec(xml)) !== null) {
-    const s    = m[1];
-    const dest = s.match(/<lt5:destination>[\s\S]*?<lt4:locationName>([^<]+)<\/lt4:locationName>/);
-    const orig = s.match(/<lt5:origin>[\s\S]*?<lt4:locationName>([^<]+)<\/lt4:locationName>/);
-    const time = getTag(s, 'sta') || getTag(s, 'std');
-
-    let prevPoints = [], nextPoints = [];
-    const prev   = s.match(/<lt8:previousCallingPoints>([\s\S]*?)<\/lt8:previousCallingPoints>/);
-    const subseq = s.match(/<lt8:subsequentCallingPoints>([\s\S]*?)<\/lt8:subsequentCallingPoints>/);
-    if (prev)   prevPoints = parseCallingPoints(prev[1]);
-    if (subseq) nextPoints = parseCallingPoints(subseq[1]);
-
-    // Last confirmed passed stop
-    let lastSeen = null;
-    for (const pt of prevPoints) {
-      if (pt.at && pt.at !== 'No report' && pt.name) lastSeen = { loc: pt.name, at: pt.at };
-    }
-    // stopsAway = prevPoints that haven't been reached yet (at is empty)
-    // These are stops between the last confirmed passed stop and Slaithwaite
-    const stopsAway = prevPoints.filter(p => !p.at).length;
-    if (lastSeen) lastSeen.stopsAway = stopsAway;
-
-    out.push({
-      type, time,
-      sortKey:     time.replace(':', ''),
-      expected:    getTag(s, 'eta') || getTag(s, 'etd'),
-      platform:    getTag(s, 'platform'),
-      origin:      orig ? orig[1] : '',
-      destination: dest ? dest[1] : '',
-      serviceID:   getTag(s, 'serviceID'),
-      lastSeen, prevPoints, nextPoints,
+function parseServices(xml,type){
+  const re=/<lt8:service>([\s\S]*?)<\/lt8:service>/g,out=[];let m;
+  while((m=re.exec(xml))!==null){
+    const s=m[1];
+    const dest=s.match(/<lt5:destination>[\s\S]*?<lt4:locationName>([^<]+)<\/lt4:locationName>/);
+    const orig=s.match(/<lt5:origin>[\s\S]*?<lt4:locationName>([^<]+)<\/lt4:locationName>/);
+    const time=getTag(s,'sta')||getTag(s,'std');
+    const prevBlock=s.match(/<lt8:previousCallingPoints>([\s\S]*?)<\/lt8:previousCallingPoints>/)?.[1]||'';
+    const pts=[...prevBlock.matchAll(/<lt8:callingPoint>([\s\S]*?)<\/lt8:callingPoint>/g)].map(m=>{
+      const get=tag=>{const r=m[1].match(new RegExp('<lt8:'+tag+'>([^<]*)<'));return r?r[1].trim():'';};
+      return{name:get('locationName'),at:get('at')};
     });
+    let lastSeen=null;
+    for(const p of pts)if(p.at&&p.at!=='No report'&&p.name)lastSeen={loc:p.name,stopsAway:pts.filter(q=>!q.at).length};
+    const nextBlock=s.match(/<lt8:subsequentCallingPoints>([\s\S]*?)<\/lt8:subsequentCallingPoints>/)?.[1]||'';
+    const nextPts=[...nextBlock.matchAll(/<lt8:callingPoint>/g)];
+    out.push({type,time,sortKey:time.replace(':',''),expected:getTag(s,'eta')||getTag(s,'etd'),platform:getTag(s,'platform'),origin:orig?orig[1]:'',destination:dest?dest[1]:'',serviceID:getTag(s,'serviceID'),lastSeen});
   }
   return out;
 }
 
-function chipFor(expected) {
-  if (!expected) return null;
-  const lo = expected.toLowerCase();
-  if (lo === 'on time')                return { cls: 'info', text: 'On time' };
-  if (lo === 'cancelled')              return { cls: 'bad',  text: 'Cancelled' };
-  if (/^\d{2}:\d{2}$/.test(expected)) return { cls: 'warn', text: 'Expected ' + expected };
+function chipFor(e){
+  if(!e)return null;
+  const lo=e.toLowerCase();
+  if(lo==='on time')return{cls:'info',text:'On time'};
+  if(lo==='cancelled')return{cls:'bad',text:'Cancelled'};
+  if(/^\d{2}:\d{2}$/.test(e))return{cls:'warn',text:'Expected '+e};
   return null;
 }
 
-function chipHTML(chip) {
-  return chip ? '<span class="chip ' + chip.cls + '">' + chip.text + '</span>' : '';
+function chipHTML(c){return c?'<span class="chip '+c.cls+'">'+c.text+'</span>':'';}
+
+function toMins(t){const[h,mn]=t.split(':').map(Number);return h*60+mn;}
+
+function detailLabel(ls,arrTime){
+  const nowMin=new Date().getHours()*60+new Date().getMinutes();
+  const minsRem=/^\d{2}:\d{2}$/.test(arrTime)?toMins(arrTime)-nowMin:null;
+  const dueSoon=ls.stopsAway===0||(minsRem!==null&&minsRem<8);
+  if(dueSoon)return'Just left '+ls.loc+', due soon.';
+  return'Just left '+ls.loc+', '+(ls.stopsAway===1?'1 stop':''+ls.stopsAway+' stops')+' to go.';
 }
 
-/*
-  Detail label permutations:
-  - No lastSeen data                          → no row 3
-  - stopsAway === 0                           → "Just left X, due soon."
-  - minsRemaining < 8 (any stops)             → "Just left X, due soon."
-  - minsRemaining >= 8, stopsAway === 1       → "Just left X, 1 stop to go."
-  - minsRemaining >= 8, stopsAway > 1         → "Just left X, N stops to go."
-  - minsRemaining unknown, stopsAway === 1    → "Just left X, 1 stop to go."
-  - minsRemaining unknown, stopsAway > 1      → "Just left X, N stops to go."
-*/
-function detailLabel(lastSeen, arrTime) {
-  const stops = lastSeen.stopsAway;
-
-  const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
-  let minsRemaining = null;
-  if (arrTime && /^\d{2}:\d{2}$/.test(arrTime)) {
-    const [h, mn] = arrTime.split(':').map(Number);
-    minsRemaining = (h * 60 + mn) - nowMin;
+function headlineFor(svcs,tab){
+  if(!svcs.length)return{cls:'',text:''};
+  const nowMin=new Date().getHours()*60+new Date().getMinutes(),isDep=tab===0;
+  const cancelled=svcs.filter(s=>(s.expected||'').toLowerCase()==='cancelled');
+  const delayed=svcs.filter(s=>/^\d{2}:\d{2}$/.test(s.expected||''));
+  const upcoming=svcs.filter(s=>(s.expected||'').toLowerCase()!=='cancelled').sort((a,b)=>toMins(a.time)-toMins(b.time));
+  const next=upcoming[0];
+  if(cancelled.length&&delayed.length){
+    const c=cancelled[0],lbl=isDep?'to '+c.destination:'from '+c.origin;
+    return{cls:'bad',text:'The '+c.time+' '+lbl+' is cancelled, and '+delayed.length+' train'+(delayed.length>1?'s are':' is')+' delayed.'};
   }
-
-  const dueSoon = stops === 0 || (minsRemaining !== null && minsRemaining < 8);
-
-  if (dueSoon) return 'Just left ' + lastSeen.loc + ', due soon.';
-
-  const stopStr = stops === 1 ? '1 stop to go.' : stops + ' stops to go.';
-  return 'Just left ' + lastSeen.loc + ', ' + stopStr;
+  if(cancelled.length){
+    const c=cancelled[0],lbl=isDep?'to '+c.destination:'from '+c.origin;
+    const nxt=next?' The '+next.time+' '+(isDep?'to '+next.destination:'from '+next.origin)+' is your best bet.':'';
+    return{cls:'bad',text:'The '+c.time+' '+lbl+' is cancelled.'+nxt};
+  }
+  if(delayed.length){
+    const d=delayed[0],lbl=isDep?'to '+d.destination:'from '+d.origin;
+    return{cls:'warn',text:'The '+d.time+' '+lbl+' is running late — now expected '+d.expected+'.'};
+  }
+  if(next){
+    const eff=/^\d{2}:\d{2}$/.test(next.expected||'')?next.expected:next.time;
+    const away=toMins(eff)-nowMin,plat=next.platform||'?';
+    const when=away<=1?'now':away<60?'in '+away+' mins':'at '+next.time;
+    if(isDep)return{cls:'',text:'The '+next.time+' to '+next.destination+' is on time, departing from Platform '+plat+' '+when+'.'};
+    return{cls:'',text:'The '+next.time+' from '+next.origin+' is on time, arriving at Platform '+plat+' '+when+'.'};
+  }
+  return{cls:'',text:''};
 }
 
-function toMins(t) {
-  const [h, mn] = t.split(':').map(Number); return h * 60 + mn;
+function updateBand(){
+  const{cls,text}=headlineFor(services,activeTab);
+  document.getElementById('status-band').className='status-band'+(cls?' '+cls:'');
+  document.getElementById('status-text').textContent=text;
 }
 
-function headlineFor(services, tab) {
-  if (!services.length) return { cls: '', text: '' };
-  const nowMin = new Date().getHours() * 60 + new Date().getMinutes();
-  const isDep  = tab === 0;
-
-  const cancelled = services.filter(s => (s.expected || '').toLowerCase() === 'cancelled');
-  const delayed   = services.filter(s => /^\d{2}:\d{2}$/.test(s.expected || ''));
-  const upcoming  = services
-    .filter(s => (s.expected || '').toLowerCase() !== 'cancelled')
-    .sort((a, b) => toMins(a.time) - toMins(b.time));
-  const next = upcoming[0];
-
-  if (cancelled.length && delayed.length) {
-    const c = cancelled[0], lbl = isDep ? 'to ' + c.destination : 'from ' + c.origin;
-    return { cls: 'bad', text: 'The ' + c.time + ' ' + lbl + ' is cancelled, and ' + delayed.length + ' train' + (delayed.length > 1 ? 's are' : ' is') + ' delayed.' };
-  }
-  if (cancelled.length) {
-    const c = cancelled[0], lbl = isDep ? 'to ' + c.destination : 'from ' + c.origin;
-    const nxt = next ? ' The ' + next.time + ' ' + (isDep ? 'to ' + next.destination : 'from ' + next.origin) + ' is your best bet.' : '';
-    return { cls: 'bad', text: 'The ' + c.time + ' ' + lbl + ' is cancelled.' + nxt };
-  }
-  if (delayed.length) {
-    const d = delayed[0], lbl = isDep ? 'to ' + d.destination : 'from ' + d.origin;
-    return { cls: 'warn', text: 'The ' + d.time + ' ' + lbl + ' is running late — now expected ' + d.expected + '.' };
-  }
-  if (next) {
-    const effectiveTime = /^\d{2}:\d{2}$/.test(next.expected || '') ? next.expected : next.time;
-    const away = toMins(effectiveTime) - nowMin;
-    const lbl  = isDep ? 'to ' + next.destination : 'from ' + next.origin;
-    const plat = next.platform || '?';
-    const when = away <= 1 ? 'now' : away < 60 ? 'in ' + away + ' mins' : 'at ' + next.time;
-    if (isDep) return { cls: '', text: 'The ' + next.time + ' to ' + next.destination + ' is on time, departing from Platform ' + plat + ' ' + when + '.' };
-    return { cls: '', text: 'The ' + next.time + ' from ' + next.origin + ' is on time, arriving at Platform ' + plat + ' ' + when + '.' };
-  }
-  return { cls: '', text: '' };
-}
-
-function updateBand() {
-  const { cls, text } = headlineFor(activeTab === 0 ? depServices : arrServices, activeTab);
-  document.getElementById('status-band').className = 'status-band' + (cls ? ' ' + cls : '');
-  document.getElementById('status-text').textContent = text;
-}
-
-function renderList(services, elId, tab) {
-  const el    = document.getElementById(elId);
-  const isDep = tab === 0;
-  if (!services.length) { el.innerHTML = '<div class="message">No trains found</div>'; return; }
-
-  el.innerHTML = services.map(s => {
-    const chip   = chipFor(s.expected);
-    const prep   = isDep ? 'to' : 'from';
-    const dest   = isDep ? s.destination : s.origin;
-    const detail = (s.lastSeen && (s.expected || '').toLowerCase() !== 'cancelled')
-      ? detailLabel(s.lastSeen, s.time) : '';
-
-    const isLate = /^\d{2}:\d{2}$/.test(s.expected || '');
-    return '<div class="card' + (isLate ? ' late' : '') + '">'
-      + '<div class="card-row-1">'
-        + '<div class="card-row-1-left">'
-          + '<span class="card-time">' + s.time + '</span>' + chipHTML(chip)
-        + '</div>'
-        + '<div class="card-row-1-right">' + (s.platform ? '<span class="card-platform">Platform ' + s.platform + '</span>' : '') + '</div>'
-      + '</div>'
-      + '<div class="card-row-2">'
-        + '<span class="card-prep">' + prep + '</span>'
-        + '<span class="card-dest">' + dest + '</span>'
-      + '</div>'
-      + (detail ? '<div class="card-row-3">' + detail + '</div>' : '')
-      + '</div>';
+function renderList(elId,tab){
+  const el=document.getElementById(elId),isDep=tab===0;
+  if(!services.length){el.innerHTML='<div class="message">No trains found</div>';return;}
+  el.innerHTML=services.map(s=>{
+    const chip=chipFor(s.expected),prep=isDep?'to':'from',dest=isDep?s.destination:s.origin;
+    const detail=s.lastSeen&&(s.expected||'').toLowerCase()!=='cancelled'?detailLabel(s.lastSeen,s.time):'';
+    const isLate=/^\d{2}:\d{2}$/.test(s.expected||'');
+    return'<div class="card'+(isLate?' late':'')+'"><div class="card-row-1"><div class="card-row-1-left"><span class="card-time">'+s.time+'</span>'+chipHTML(chip)+'</div><div class="card-row-1-right">'+(s.platform?'<span class="card-platform">Platform '+s.platform+'</span>':'')+'</div></div><div class="card-row-2"><span class="card-prep">'+prep+'</span><span class="card-dest">'+dest+'</span></div>'+(detail?'<div class="card-row-3">'+detail+'</div>':'')+'</div>';
   }).join('');
 }
 
-async function load() {
-  document.getElementById('status-updated').textContent = 'Updating...';
-  try {
-    const [dr, ar] = await Promise.all([
-      fetch(WORKER + '/?crs=SWT&type=dep'),
-      fetch(WORKER + '/?crs=SWT&type=arr'),
-    ]);
-    const [dx, ax] = await Promise.all([dr.text(), ar.text()]);
-
-    const deps = parseServices(dx, 'dep').sort((a, b) => a.sortKey.localeCompare(b.sortKey));
-    const arrs = parseServices(ax, 'arr').sort((a, b) => a.sortKey.localeCompare(b.sortKey));
-
-    const arrMap = new Map(arrs.map(s => [s.serviceID, s]));
-    const depMap = new Map(deps.map(s => [s.serviceID, s]));
-    const allIDs = new Set([...arrMap.keys(), ...depMap.keys()]);
-
-    const merged = [...allIDs].map(id => {
-      const arr = arrMap.get(id), dep = depMap.get(id);
-      return { ...(arr || dep), prevPoints: arr ? arr.prevPoints : [], nextPoints: dep ? dep.nextPoints : [] };
-    }).sort((a, b) => a.sortKey.localeCompare(b.sortKey));
-
-    depServices = arrServices = merged;
-    renderList(depServices, 'trains-dep', 0);
-    renderList(arrServices, 'trains-arr', 1);
-
-    const now = new Date();
-    document.getElementById('status-updated').textContent =
-      'Updated ' + now.getHours() + ':' + String(now.getMinutes()).padStart(2, '0');
-
-    updateBand();
-    adjustTop();
-
-  } catch(e) {
-    document.getElementById('trains-dep').innerHTML = '<div class="message">Could not load trains.</div>';
-    document.getElementById('status-updated').textContent = 'Failed';
+async function load(){
+  document.getElementById('status-updated').textContent='Updating...';
+  try{
+    const[dr,ar]=await Promise.all([fetch(WORKER+'/?crs=SWT&type=dep'),fetch(WORKER+'/?crs=SWT&type=arr')]);
+    const[dx,ax]=await Promise.all([dr.text(),ar.text()]);
+    const deps=parseServices(dx,'dep'),arrs=parseServices(ax,'arr');
+    const arrMap=new Map(arrs.map(s=>[s.serviceID,s])),depMap=new Map(deps.map(s=>[s.serviceID,s]));
+    services=[...new Set([...arrMap.keys(),...depMap.keys()])].map(id=>{
+      const a=arrMap.get(id),d=depMap.get(id);return{...(a||d),lastSeen:a?a.lastSeen:(d?d.lastSeen:null)};
+    }).sort((a,b)=>a.sortKey.localeCompare(b.sortKey));
+    renderList('trains-dep',0);
+    renderList('trains-arr',1);
+    const now=new Date();
+    document.getElementById('status-updated').textContent='Updated '+now.getHours()+':'+String(now.getMinutes()).padStart(2,'0');
+    updateBand();adjustTop();
+  }catch(e){
+    document.getElementById('trains-dep').innerHTML='<div class="message">Could not load trains.</div>';
+    document.getElementById('status-updated').textContent='Failed';
     adjustTop();
   }
 }
 
 load();
-setInterval(load, 60000);
+setInterval(load,60000);
 </script>
 </body>
 </html>
